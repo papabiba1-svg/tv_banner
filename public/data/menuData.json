@@ -32,177 +32,27 @@
     {
       "id": "wareniki-kartoffel",
       "orderNumber": "1.",
-      "name": "Wareniki mit Kartoffel",
+      "name": "Wareniki mit Fleischfüllung",
       "subtitle": "Der beliebte osteuropäische Klassiker",
-      "description": "Zarte Teigtaschen gefüllt mit samtigem Kartoffelpüree, garniert mit knusprig gebratenen Röstzwiebeln, frischen Gartenkräutern und hausgemachtem Joghurt-Dip.",
-      "price": 9.9,
-      "priceFormatted": "9,90 €",
+      "description": "Handgemachte Teigtaschen mit Hähnchenfleischfüllung,mit gebratenen Zwiebeln und Joghurt-Dip",
+      "price": 12,
+      "priceFormatted": "12,00 €",
       "categoryId": "wareniki-pelmeni",
-      "image": "./dishes/wareniki-kartoffel.png",
+      "image": "./dishes/vareniki-s-mjasom-removebg-preview.png",
       "badge": "Bestseller",
       "badgeType": "yellow",
       "allergens": "Allergene: A (Weizen), G (Milch / Laktose)",
-      "portion": "10 Stück • 320g",
+      "portion": "9 Stück",
       "isVegetarian": true,
-      "isBestseller": true,
-      "isAvailable": true,
+      "isSpicy": false,
+      "isBestseller": false,
+      "isAvailable": false,
       "tags": [
         "Vegetarisch",
         "Hausgemacht",
         "Tradition"
       ]
-    },
-    {
-      "id": "pelmeni-sibirisch",
-      "orderNumber": "2.",
-      "name": "Sibirische Pelmeni",
-      "subtitle": "Herzhafte Rind- & Schweinefleischfüllung",
-      "description": "Klassische handgeformte Pelmeni mit saftiger Füllung aus erlesenem Fleisch, geschmolzener Bauernbutter, frisch gemahlenem schwarzem Pfeffer, Petersilie und Sauerrahm.",
-      "price": 11.5,
-      "priceFormatted": "11,50 €",
-      "categoryId": "wareniki-pelmeni",
-      "image": "./dishes/pelmeni-sibirisch.png",
-      "badge": "Hausrezept",
-      "badgeType": "green",
-      "allergens": "Allergene: A (Weizen), C (Ei), G (Milch)",
-      "portion": "15 Stück • 340g",
-      "isBestseller": true,
-      "isAvailable": true,
-      "tags": [
-        "100% Fleisch",
-        "Frisch gekocht",
-        "Tradition"
-      ]
-    },
-    {
-      "id": "pelmeni-gebraten",
-      "orderNumber": "3.",
-      "name": "Gebratene Pelmeni Crispy",
-      "subtitle": "Knusprig in der Pfanne goldbraun geschwenkt",
-      "description": "In Sesamöl kross angebratene Fleischpelmeni, bestreut mit Frühlingszwiebeln und geröstetem Sesam, serviert mit würzigem Paprika-Knoblauch-Dip.",
-      "price": 12.2,
-      "priceFormatted": "12,20 €",
-      "categoryId": "wareniki-pelmeni",
-      "image": "./dishes/pelmeni-gebraten.png",
-      "badge": "Chef-Tipp",
-      "badgeType": "yellow",
-      "allergens": "Allergene: A (Weizen), C (Ei), K (Sesam)",
-      "portion": "14 Stück • 330g",
-      "isSpicy": true,
-      "isAvailable": true,
-      "tags": [
-        "Extra Knusprig",
-        "Würziger Dip"
-      ]
-    },
-    {
-      "id": "wareniki-kirsche",
-      "orderNumber": "4.",
-      "name": "Wareniki mit Sauerkirschen",
-      "subtitle": "Süßer Fruchttraum nach Großmutters Art",
-      "description": "Süße handgemachte Teigtaschen mit saftigen Sauerkirschen, serviert mit Bourbon-Puderzucker, frischer Minze und samtigem Kirsch-Fruchtspiegel.",
-      "price": 10.5,
-      "priceFormatted": "10,50 €",
-      "categoryId": "wareniki-pelmeni",
-      "image": "./dishes/wareniki-kirsche.png",
-      "badge": "Süße Verführung",
-      "badgeType": "yellow",
-      "allergens": "Allergene: A (Weizen), G (Milch)",
-      "portion": "8 Stück • 290g",
-      "isVegetarian": true,
-      "isAvailable": true,
-      "tags": [
-        "Dessert",
-        "Vegetarisch",
-        "Fruchtig"
-      ]
-    },
-    {
-      "id": "burger-house",
-      "orderNumber": "5.",
-      "name": "MTA House Burger",
-      "subtitle": "Unser legendärer Signature-Burger",
-      "description": "200g feinstes Black Angus Beef auf getoastetem Brioche-Bun, geschmolzener Vintage Cheddar, krosser Bacon, Strauchtomaten, Essiggurken, karamellisierte Zwiebeln & MTA Spezial-Sauce.",
-      "price": 13.9,
-      "priceFormatted": "13,90 €",
-      "categoryId": "burgers",
-      "image": "./dishes/burger-house.png",
-      "badge": "Top Seller",
-      "badgeType": "yellow",
-      "allergens": "Allergene: A (Weizen), C (Ei), G (Milch), J (Senf)",
-      "portion": "Inkl. Pommes Frites • 450g",
-      "isBestseller": true,
-      "isAvailable": true,
-      "tags": [
-        "Black Angus",
-        "Inkl. Beilage",
-        "Brioche"
-      ]
-    },
-    {
-      "id": "burger-crispy-chicken",
-      "orderNumber": "6.",
-      "name": "Crispy Buttermilk Chicken Burger",
-      "subtitle": "Extra kross paniertes Hähnchenfilet",
-      "description": "Goldbraun gebackenes Hähnchenbrustfilet in Buttermilch-Panade, hausgemachter Rotkohl-Coleslaw, geschmolzener Käse, knackiger Salat & Smoky Honey-Mustard Cream.",
-      "price": 12.9,
-      "priceFormatted": "12,90 €",
-      "categoryId": "burgers",
-      "image": "./dishes/burger-crispy-chicken.png",
-      "badge": "Neuheit",
-      "badgeType": "green",
-      "allergens": "Allergene: A (Weizen), C (Ei), G (Milch), J (Senf)",
-      "portion": "Inkl. Pommes Frites • 420g",
-      "isAvailable": true,
-      "tags": [
-        "Knusprig",
-        "Zartes Hähnchen",
-        "Hausgemacht"
-      ]
-    },
-    {
-      "id": "borsch-traditionell",
-      "orderNumber": "7.",
-      "name": "Traditioneller Borschtsch",
-      "subtitle": "Mit zartem Rindfleisch & Pampuschka",
-      "description": "Kräftig gekochte Rote-Bete-Suppe mit zart gegartem Rindfleisch, frischem Kohl, Kartoffeln, Dill und einem großzügigen Löffel Crème fraîche. Serviert mit heißem Knoblauch-Hefegebäck.",
-      "price": 9.5,
-      "priceFormatted": "9,50 €",
-      "categoryId": "suppen-special",
-      "image": "./dishes/borsch-traditionell.png",
-      "badge": "Heiß & Herzhaft",
-      "badgeType": "green",
-      "allergens": "Allergene: A (Weizen), G (Milch), I (Sellerie)",
-      "portion": "450ml • Inkl. 1 Pampuschka",
-      "isAvailable": true,
-      "tags": [
-        "Traditionssuppe",
-        "Heiß serviert",
-        "Mit Knoblauchbrot"
-      ]
-    },
-    {
-      "id": "hausgemachte-limonade",
-      "orderNumber": "8.",
-      "name": "MTA Hausgemachte Limonade",
-      "subtitle": "Eiskalt & natürlich aromatisiert",
-      "description": "Frisch gepresster Zitronen- & Limettensaft mit marokkanischer Minze, leichtem Rohrzuckersirup und prickelndem Quellwasser auf Crushed Ice serviert.",
-      "price": 4.5,
-      "priceFormatted": "4,50 €",
-      "categoryId": "suppen-special",
-      "image": "./dishes/hausgemachte-limonade.png",
-      "badge": "100% Bio",
-      "badgeType": "yellow",
-      "allergens": "Ohne Allergene / Vegan",
-      "portion": "0,5 Liter",
-      "isVegetarian": true,
-      "isAvailable": true,
-      "tags": [
-        "Erfrischend",
-        "Ohne Konservierungsstoffe",
-        "Eiskalt"
-      ]
     }
   ],
-  "updatedAt": "2026-11-15T17:44:42.882Z"
+  "updatedAt": "2026-11-15T18:35:52.559Z"
 }
