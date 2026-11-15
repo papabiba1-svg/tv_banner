@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import type { Dish } from '../data/menuData';
+import { resolveAssetUrl } from '../data/menuData';
 
 interface CategoryPreviewListProps {
   dishes: Dish[];
@@ -41,9 +42,12 @@ export const CategoryPreviewList: React.FC<CategoryPreviewListProps> = ({
               {/* Dish Miniature */}
               <div className="relative w-12 h-12 flex-shrink-0">
                 <img
-                  src={dish.image}
+                  src={resolveAssetUrl(dish.image)}
                   alt={dish.name}
                   className="w-full h-full object-contain filter drop-shadow-sm"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/wareniki-kartoffel.png');
+                  }}
                 />
                 {isActive && (
                   <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#F4C414] rounded-full border border-[#005826]" />

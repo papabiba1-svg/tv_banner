@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Maximize2, Minimize2, Wifi, ShieldCheck } from 'lucide-react';
 import type { Category, MenuBoardConfig } from '../data/menuData';
+import { resolveAssetUrl } from '../data/menuData';
 
 interface HeaderProps {
   currentCategory: Category;
@@ -91,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <div className="relative">
                 <img
-                  src={config.logoUrl}
+                  src={resolveAssetUrl(config.logoUrl)}
                   alt="MTA Food House Logo"
                   className="w-16 h-16 md:w-20 md:h-20 rounded-full object-contain shadow-lg ring-2 ring-[#005826]/20 group-hover:ring-[#F4C414] transition-all bg-[#F9F6E8]"
                 />

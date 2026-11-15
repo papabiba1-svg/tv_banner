@@ -47,6 +47,20 @@ export const formatEuroPrice = (val: number): string => {
   return val.toFixed(2).replace('.', ',') + ' €';
 };
 
+/**
+ * Resolves relative asset paths against import.meta.env.BASE_URL
+ * Ensures images and data files work seamlessly when deployed to GitHub Pages subfolders (e.g. /tv_banner/)
+ */
+export const resolveAssetUrl = (url: string): string => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const cleanPath = url.replace(/^\.?\//, '');
+  return `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}${cleanPath}`;
+};
+
 export const MENU_CONFIG: MenuBoardConfig = {
   restaurantName: "MTA FOOD HOUSE",
   slogan: "Frisch zubereitet • Authentischer Geschmack",

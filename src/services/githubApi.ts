@@ -20,7 +20,7 @@ export function getStoredSettings(): GitHubSettings {
   }
   return {
     token: '',
-    repo: '',
+    repo: 'papabiba1-svg/tv_banner',
     branch: 'main',
     pin: DEFAULT_PIN,
   };

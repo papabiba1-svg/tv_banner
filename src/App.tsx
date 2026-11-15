@@ -10,6 +10,7 @@ import {
   CATEGORIES as DEFAULT_CATEGORIES,
   MENU_ITEMS as DEFAULT_ITEMS,
   MENU_CONFIG as DEFAULT_CONFIG,
+  resolveAssetUrl,
 } from './data/menuData';
 import type { Category, Dish, MenuBoardConfig, MenuDataPayload } from './data/menuData';
 import type { GitHubSettings } from './services/githubApi';
@@ -52,6 +53,7 @@ export const App: React.FC = () => {
         hash === '#/admin' ||
         hash === '#admin' ||
         path.endsWith('/admin') ||
+        path.endsWith('/admin/') ||
         search.includes('admin')
       ) {
         handleOpenAdmin();
@@ -68,10 +70,11 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  // Fetch public/data/menuData.json with timestamp cache busting
+  // Fetch public/data/menuData.json with timestamp cache busting & BASE_URL resolution
   const loadRemoteMenuData = useCallback(async () => {
     try {
-      const res = await fetch(`./data/menuData.json?_t=${Date.now()}`, {
+      const dataUrl = resolveAssetUrl('data/menuData.json') + `?_t=${Date.now()}`;
+      const res = await fetch(dataUrl, {
         cache: 'no-store',
       });
       if (res.ok) {

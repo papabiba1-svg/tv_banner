@@ -18,7 +18,7 @@ import {
   Lock,
 } from 'lucide-react';
 import type { Dish, Category, MenuBoardConfig, MenuDataPayload } from '../../data/menuData';
-import { formatEuroPrice } from '../../data/menuData';
+import { formatEuroPrice, resolveAssetUrl } from '../../data/menuData';
 import type { GitHubSettings } from '../../services/githubApi';
 import {
   uploadOrUpdateGitHubFile,
@@ -482,12 +482,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       <div className="flex items-start justify-between gap-3 mb-2.5">
                         <div className="relative w-16 h-16 flex-shrink-0 bg-gray-50 rounded-xl p-1 border border-gray-100">
                           <img
-                            src={dish.image}
+                            src={resolveAssetUrl(dish.image)}
                             alt={dish.name}
                             className="w-full h-full object-contain filter drop-shadow-sm"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
-                                './dishes/wareniki-kartoffel.png';
+                                resolveAssetUrl('./dishes/wareniki-kartoffel.png');
                             }}
                           />
                         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Leaf, Flame, Award, Info, Utensils } from 'lucide-react';
 import type { Dish } from '../data/menuData';
+import { resolveAssetUrl } from '../data/menuData';
 
 interface DishShowcaseProps {
   dish: Dish;
@@ -73,14 +74,14 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
               >
                 {/* Plate PNG with transparent background */}
                 <img
-                  src={dish.image}
+                  src={resolveAssetUrl(dish.image)}
                   alt={dish.name}
                   className="w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] md:w-[460px] md:h-[460px] xl:w-[540px] xl:h-[540px] 2xl:w-[600px] 2xl:h-[600px] object-contain plate-drop-shadow filter select-none pointer-events-none"
                   loading="eager"
                   onError={(e) => {
                     // Fallback to placeholder if custom image fails
                     const target = e.target as HTMLImageElement;
-                    target.src = './dishes/wareniki-kartoffel.png';
+                    target.src = resolveAssetUrl('./dishes/wareniki-kartoffel.png');
                   }}
                 />
 

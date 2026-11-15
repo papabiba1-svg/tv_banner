@@ -11,7 +11,7 @@ import {
   Check,
 } from 'lucide-react';
 import type { Dish, Category } from '../../data/menuData';
-import { formatEuroPrice } from '../../data/menuData';
+import { formatEuroPrice, resolveAssetUrl } from '../../data/menuData';
 import { compressImageForMenu } from '../../services/githubApi';
 
 interface DishEditorModalProps {
@@ -175,11 +175,11 @@ export const DishEditorModal: React.FC<DishEditorModalProps> = ({
                 </label>
                 <div className="relative group w-44 h-44 rounded-2xl bg-white border-2 border-dashed border-[#005826]/30 hover:border-[#005826] flex flex-col items-center justify-center p-2 shadow-sm overflow-hidden transition-colors">
                   <img
-                    src={imagePreview}
+                    src={resolveAssetUrl(imagePreview)}
                     alt="Предпросмотр"
                     className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = './dishes/wareniki-kartoffel.png';
+                      (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/wareniki-kartoffel.png');
                     }}
                   />
                   
