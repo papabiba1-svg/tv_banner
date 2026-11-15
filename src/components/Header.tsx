@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Clock, Maximize2, Minimize2, ShieldCheck } from 'lucide-react';
+import { Clock, Calendar, Maximize2, Minimize2, ShieldCheck } from 'lucide-react';
 import type { MenuBoardConfig } from '../data/menuData';
 import { resolveAssetUrl } from '../data/menuData';
 
@@ -17,6 +17,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenAdmin,
 }) => {
   const [time, setTime] = useState<string>('');
+  const [dateStr, setDateStr] = useState<string>('');
   const clickCountRef = useRef<number>(0);
   const clickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -28,6 +29,13 @@ export const Header: React.FC<HeaderProps> = ({
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
+        })
+      );
+      setDateStr(
+        now.toLocaleDateString('de-DE', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
         })
       );
     };
@@ -112,12 +120,22 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Right: Elegant Digital Clock Only */}
-        <div className="flex items-center gap-[0.8vw] bg-white/80 backdrop-blur-md px-[1.8vw] py-[1vh] rounded-2xl border-2 border-[#005826]/15 shadow-sm">
-          <Clock className="w-[2.6vh] h-[2.6vh] min-w-[18px] min-h-[18px] text-[#F4C414]" />
-          <span className="font-mono text-[clamp(1.2rem,2.2vw,2.8rem)] font-black text-[#005826] tracking-widest leading-none">
-            {time || '--:--:--'}
-          </span>
+        {/* Right: Elegant Date & Digital Clock Display */}
+        <div className="flex items-center gap-[1vw] bg-white/85 backdrop-blur-md px-[1.5vw] py-[0.8vh] rounded-2xl border-2 border-[#005826]/15 shadow-sm">
+          {dateStr && (
+            <div className="flex items-center gap-[0.5vw] border-r-2 border-[#005826]/15 pr-[1vw]">
+              <Calendar className="w-[2.2vh] h-[2.2vh] min-w-[16px] min-h-[16px] text-[#005826]" />
+              <span className="font-mono text-[clamp(1rem,1.4vw,1.9rem)] font-extrabold text-[#005826] tracking-wide leading-none">
+                {dateStr}
+              </span>
+            </div>
+          )}
+          <div className="flex items-center gap-[0.5vw]">
+            <Clock className="w-[2.4vh] h-[2.4vh] min-w-[18px] min-h-[18px] text-[#F4C414]" />
+            <span className="font-mono text-[clamp(1.1rem,1.9vw,2.5rem)] font-black text-[#005826] tracking-widest leading-none">
+              {time || '--:--:--'}
+            </span>
+          </div>
         </div>
       </div>
     </header>
