@@ -122,22 +122,22 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
             </div>
 
             {/* RIGHT COLUMN (Cols 7..12): Dynamic Height Description with Bottom-Anchored Price */}
-            <div className="col-span-6 h-full flex flex-col text-left pr-[1vw] relative z-20 overflow-hidden">
+            <div className="col-span-6 h-full flex flex-col text-left px-[0.5vw] relative z-20">
               
-              {/* 1. Composition & Ingredients Block (Adaptive dynamic height matching exact text size, clean spacing from title and allergens) */}
+              {/* 1. Composition & Ingredients Block (Clean, fully-rounded container with uniform borders on all sides, no sheared edges) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.16, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full h-auto max-h-[30vh] bg-white/92 backdrop-blur-xl rounded-[2.2rem] px-[2.6vw] py-[2vh] border-l-[10px] border-[#005826] shadow-[0_16px_36px_-10px_rgba(0,40,15,0.12)] ring-1 ring-[#005826]/12 overflow-hidden mb-[2.4vh] flex-shrink-0"
+                className="w-full h-auto max-h-[30vh] bg-white/95 backdrop-blur-xl rounded-[2.2rem] border-[3px] border-[#005826]/25 px-[2.6vw] py-[2.2vh] shadow-[0_12px_32px_rgba(0,40,15,0.08)] mb-[2.4vh] flex-shrink-0"
               >
-                <p className="text-[clamp(1.3rem,2.1vw,2.8rem)] text-[#1E2922] font-black leading-[1.32] line-clamp-4 overflow-hidden text-ellipsis">
+                <p className="text-[clamp(1.3rem,2.1vw,2.7rem)] text-[#1E2922] font-black leading-[1.35] line-clamp-4">
                   {dish.description}
                 </p>
               </motion.div>
 
               {/* 2. Allergens Line (Consistent clean distance below description, with mb-auto to anchor price at bottom) */}
-              <div className="h-[6.5vh] min-h-[44px] flex-shrink-0 flex items-center mb-auto overflow-hidden">
+              <div className="h-[6.5vh] min-h-[44px] flex-shrink-0 flex items-center mb-auto">
                 {dish.allergens ? (
                   <motion.div
                     initial={{ opacity: 0, y: 15 }}
