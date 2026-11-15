@@ -280,7 +280,7 @@ export const App: React.FC = () => {
   }, [isPaused, isAdminOpen, slideDuration, handleNextDish]);
 
   return (
-    <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#F9F6E8] cream-pattern flex flex-col justify-between select-none font-sans">
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden signage-bg flex flex-col justify-between select-none font-sans text-[#FDFBF7]">
       
       {/* 1. Header: Clean & Minimalist Full-Width Bar (Logo + MTA FOOD HOUSE + Clock) */}
       <Header
@@ -295,7 +295,7 @@ export const App: React.FC = () => {
         {currentDish ? (
           <DishShowcase dish={currentDish} direction={direction} />
         ) : (
-          <div className="w-full flex items-center justify-center text-[#005826] font-bold text-3xl">
+          <div className="w-full flex items-center justify-center text-[#F4C414] font-bold text-3xl">
             Keine Gerichte verfügbar.
           </div>
         )}
@@ -303,13 +303,13 @@ export const App: React.FC = () => {
 
       {/* 3. Bottom Edge: Full-Width Timer Progress Bar & MTA Ribbon */}
       <div className="w-full flex-shrink-0 z-20">
-        <div className="w-full h-[0.6vh] min-h-[4px] bg-[#005826]/10 overflow-hidden relative">
+        <div className="w-full h-[0.5vh] min-h-[4px] bg-white/10 overflow-hidden relative">
           <div
             className="h-full bg-gradient-to-r from-[#F4C414] via-[#FFE066] to-[#F4C414] transition-all duration-100 ease-linear"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
-        <div className="h-[0.8vh] min-h-[6px] w-full mta-stripes-slim" />
+        <div className="h-[0.7vh] min-h-[5px] w-full mta-stripes-slim" />
       </div>
 
       {/* 4. Hidden Floating Kiosk TV Controls (auto-hides on idle) */}

@@ -6,6 +6,7 @@
   --color-cream: #F9F6E8;
   --color-green: #005826;
   --color-yellow: #F4C414;
+  --color-dark-bg: #0A160F;
 }
 
 * {
@@ -20,7 +21,7 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background-color: #F9F6E8;
+  background-color: #0A160F;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   user-select: none;
   -webkit-user-select: none;
@@ -33,7 +34,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F9F6E8;
+  background-color: #0A160F;
 }
 
 /* MTA Food House signature diagonal stripes ribbon */
@@ -65,16 +66,23 @@ html, body {
   );
 }
 
-/* Subtle textured cream background */
-.cream-pattern {
-  background-color: #F9F6E8;
-  background-image: radial-gradient(rgba(0, 88, 38, 0.035) 1px, transparent 1px);
-  background-size: 24px 24px;
+/* Deep luxury Digital Signage studio background */
+.signage-bg {
+  background:
+    radial-gradient(circle at 26% 58%, rgba(0, 110, 48, 0.34) 0%, rgba(12, 34, 21, 0.15) 42%, transparent 70%),
+    radial-gradient(circle at 78% 28%, rgba(244, 196, 20, 0.08) 0%, transparent 55%),
+    radial-gradient(circle at 75% 82%, rgba(0, 88, 38, 0.22) 0%, transparent 60%),
+    linear-gradient(135deg, #0D1F15 0%, #09140E 52%, #060D09 100%);
 }
 
-/* Custom plate shadow */
+/* Subtle textured cream background (fallback) */
+.cream-pattern {
+  background-color: #0A160F;
+}
+
+/* Custom cinematic plate shadow for dark signage */
 .plate-drop-shadow {
-  filter: drop-shadow(0 25px 25px rgba(0, 40, 15, 0.28)) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 28px 38px rgba(0, 0, 0, 0.65)) drop-shadow(0 8px 18px rgba(244, 196, 20, 0.14));
 }
 
 /* Custom scrollbar hiding */

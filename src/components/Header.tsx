@@ -68,15 +68,15 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="relative w-full z-30 select-none flex-shrink-0">
       {/* 1. Signature MTA Diagonal Stripes Ribbon */}
-      <div className="h-[1vh] min-h-[8px] w-full mta-stripes shadow-md relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-transparent pointer-events-none" />
+      <div className="h-[0.8vh] min-h-[6px] w-full mta-stripes shadow-md relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 to-transparent pointer-events-none" />
       </div>
 
-      {/* 2. Main Minimalist Premium Full-Width Header Bar */}
-      <div className="bg-[#F9F6E8]/90 backdrop-blur-md border-b-2 border-[#005826]/15 px-[3.5vw] py-[1.5vh] flex items-center justify-between shadow-sm relative">
+      {/* 2. Main Minimalist Premium Full-Width Digital Signage Header Bar */}
+      <div className="bg-[#07120B]/80 backdrop-blur-xl border-b border-white/[0.08] px-[3.5vw] py-[1.2vh] flex items-center justify-between shadow-[0_10px_30px_rgba(0,0,0,0.45)] relative">
         
-        {/* Left: Brand Logo + Restaurant Name */}
-        <div className="flex items-center gap-[1.5vw]">
+        {/* Left: Brand Logo + Restaurant Name + "+ FRISCH ZUBEREITET" Badge */}
+        <div className="flex items-center gap-[1.4vw]">
           <div className="relative group">
             <button
               onClick={handleLogoClick}
@@ -87,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <img
                   src={resolveAssetUrl(config.logoUrl || './logo.png')}
                   alt="MTA Food House"
-                  className="w-[7.2vh] h-[7.2vh] min-w-[48px] min-h-[48px] rounded-full object-contain shadow-lg ring-2 ring-[#005826]/25 group-hover:ring-[#F4C414] transition-all bg-[#F9F6E8]"
+                  className="w-[6.8vh] h-[6.8vh] min-w-[46px] min-h-[46px] rounded-full object-contain shadow-[0_4px_20px_rgba(0,0,0,0.6)] ring-2 ring-[#F4C414]/60 group-hover:ring-[#F4C414] transition-all bg-[#F9F6E8]"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = resolveAssetUrl('./logo.png');
                   }}
@@ -109,15 +109,15 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           <div className="flex flex-col justify-center">
-            <h1 className="text-[clamp(1.4rem,2.6vw,3.4rem)] font-black tracking-tight text-[#005826] leading-none uppercase font-display drop-shadow-sm">
+            <h1 className="text-[clamp(1.35rem,2.4vw,3.1rem)] font-black tracking-wider text-[#FDFBF7] leading-none uppercase font-display drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               {config.restaurantName || 'MTA FOOD HOUSE'}
             </h1>
-            {/* Prominent, stylish "Frisch zubereitet" quality badge in the header */}
-            <div className="flex items-center gap-[0.5vw] mt-[0.5vh]">
-              <div className="inline-flex items-center gap-[0.4vw] bg-[#005826] text-[#F4C414] px-[1.1vw] py-[0.35vh] rounded-xl shadow-sm border border-[#F4C414]/40">
-                <Sparkles className="w-[1.8vh] h-[1.8vh] min-w-[13px] min-h-[13px] fill-[#F4C414] text-[#F4C414]" />
-                <span className="text-[clamp(0.95rem,1.35vw,1.8rem)] font-black tracking-widest uppercase font-display leading-tight">
-                  Frisch zubereitet
+            {/* Stylish "+ FRISCH ZUBEREITET" badge directly under restaurant name */}
+            <div className="flex items-center mt-[0.5vh]">
+              <div className="inline-flex items-center gap-[0.4vw] bg-gradient-to-r from-[#005826] to-[#00421C] text-[#F4C414] px-[1vw] py-[0.28vh] rounded-lg shadow-[0_2px_12px_rgba(0,0,0,0.35)] border border-[#F4C414]/45">
+                <Sparkles className="w-[1.6vh] h-[1.6vh] min-w-[12px] min-h-[12px] fill-[#F4C414] text-[#F4C414]" />
+                <span className="text-[clamp(0.85rem,1.2vw,1.55rem)] font-black tracking-[0.14em] uppercase font-display leading-tight">
+                  + FRISCH ZUBEREITET
                 </span>
               </div>
             </div>
@@ -125,18 +125,18 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Right: Elegant Date & Digital Clock Display */}
-        <div className="flex items-center gap-[1vw] bg-white/85 backdrop-blur-md px-[1.5vw] py-[0.8vh] rounded-2xl border-2 border-[#005826]/15 shadow-sm">
+        <div className="flex items-center gap-[1.1vw] bg-white/[0.06] backdrop-blur-md px-[1.5vw] py-[0.8vh] rounded-2xl border border-white/[0.12] shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
           {dateStr && (
-            <div className="flex items-center gap-[0.5vw] border-r-2 border-[#005826]/15 pr-[1vw]">
-              <Calendar className="w-[2.2vh] h-[2.2vh] min-w-[16px] min-h-[16px] text-[#005826]" />
-              <span className="font-mono text-[clamp(1rem,1.4vw,1.9rem)] font-extrabold text-[#005826] tracking-wide leading-none">
+            <div className="flex items-center gap-[0.5vw] border-r border-white/[0.15] pr-[1.1vw]">
+              <Calendar className="w-[2.1vh] h-[2.1vh] min-w-[16px] min-h-[16px] text-[#F4C414]" />
+              <span className="font-mono text-[clamp(0.95rem,1.35vw,1.8rem)] font-bold text-[#E2ECE5] tracking-wider leading-none">
                 {dateStr}
               </span>
             </div>
           )}
           <div className="flex items-center gap-[0.5vw]">
-            <Clock className="w-[2.4vh] h-[2.4vh] min-w-[18px] min-h-[18px] text-[#F4C414]" />
-            <span className="font-mono text-[clamp(1.1rem,1.9vw,2.5rem)] font-black text-[#005826] tracking-widest leading-none">
+            <Clock className="w-[2.3vh] h-[2.3vh] min-w-[18px] min-h-[18px] text-[#F4C414]" />
+            <span className="font-mono text-[clamp(1.1rem,1.8vw,2.35rem)] font-black text-[#FDFBF7] tracking-widest leading-none">
               {time || '--:--:--'}
             </span>
           </div>
