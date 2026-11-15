@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
 import { DishShowcase } from './components/DishShowcase';
-import { CategoryBar } from './components/CategoryBar';
-import { CategoryPreviewList } from './components/CategoryPreviewList';
 import { KioskControls } from './components/KioskControls';
 import { AdminPanel } from './components/admin/AdminPanel';
 import { AdminAuthModal } from './components/admin/AdminAuthModal';
@@ -20,13 +18,12 @@ import {
 } from './services/githubApi';
 
 export const App: React.FC = () => {
-  // Menu data state (initialized with local defaults, then loaded from public/data/menuData.json)
+  // Menu data state
   const [config, setConfig] = useState<MenuBoardConfig>(DEFAULT_CONFIG);
   const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
   const [allItems, setAllItems] = useState<Dish[]>(DEFAULT_ITEMS);
 
   // TV display slider state
-  const [selectedCategory, setSelectedCategory] = useState<Category>(DEFAULT_CATEGORIES[0]);
   const [currentDishIndex, setCurrentDishIndex] = useState<number>(0);
   const [direction, setDirection] = useState<number>(1);
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -87,11 +84,6 @@ export const App: React.FC = () => {
         }
         if (payload.categories && payload.categories.length > 0) {
           setCategories(payload.categories);
-          // Keep active category in sync if possible
-          setSelectedCategory((prev) => {
-            const match = payload.categories.find((c) => c.id === prev.id);
-            return match || payload.categories[0];
-          });
         }
         if (payload.items && payload.items.length > 0) {
           setAllItems(payload.items);
@@ -106,7 +98,6 @@ export const App: React.FC = () => {
   useEffect(() => {
     loadRemoteMenuData();
 
-    // Auto-poll in background so TV updates without reloading
     const pollInterval = setInterval(() => {
       loadRemoteMenuData();
     }, 60000);
@@ -114,77 +105,35 @@ export const App: React.FC = () => {
     return () => clearInterval(pollInterval);
   }, [loadRemoteMenuData]);
 
-  // Dishes filtered by current category & only available dishes (isAvailable !== false)
-  const availableDishesInCategory: Dish[] = allItems.filter(
-    (item) => item.categoryId === selectedCategory.id && item.isAvailable !== false
+  // Display dishes: only available items, fallback to all if none explicitly available
+  const availableDishes: Dish[] = allItems.filter(
+    (item) => item.isAvailable !== false
   );
+  const displayDishes: Dish[] =
+    availableDishes.length > 0 ? availableDishes : allItems;
 
-  // Fallback to any dish in category if none is marked available
-  const dishesInCurrentCategory: Dish[] =
-    availableDishesInCategory.length > 0
-      ? availableDishesInCategory
-      : allItems.filter((item) => item.categoryId === selectedCategory.id);
-
-  const currentDish: Dish =
-    dishesInCurrentCategory[currentDishIndex] || dishesInCurrentCategory[0] || allItems[0];
+  const currentDish: Dish | undefined =
+    displayDishes[currentDishIndex] || displayDishes[0] || allItems[0];
 
   // Advance to next dish
   const handleNextDish = useCallback(() => {
     setDirection(1);
     setProgressPercent(0);
     setCurrentDishIndex((prevIndex) => {
-      if (prevIndex + 1 < dishesInCurrentCategory.length) {
-        return prevIndex + 1;
-      } else {
-        // Loop to next category when current category completes
-        const currentCatIndex = categories.findIndex(
-          (c) => c.id === selectedCategory.id
-        );
-        const nextCatIndex = (currentCatIndex + 1) % categories.length;
-        setSelectedCategory(categories[nextCatIndex]);
-        return 0;
-      }
+      if (displayDishes.length <= 1) return 0;
+      return (prevIndex + 1) % displayDishes.length;
     });
-  }, [dishesInCurrentCategory.length, categories, selectedCategory.id]);
+  }, [displayDishes.length]);
 
   // Back to previous dish
   const handlePrevDish = useCallback(() => {
     setDirection(-1);
     setProgressPercent(0);
     setCurrentDishIndex((prevIndex) => {
-      if (prevIndex > 0) {
-        return prevIndex - 1;
-      } else {
-        const currentCatIndex = categories.findIndex(
-          (c) => c.id === selectedCategory.id
-        );
-        const prevCatIndex =
-          (currentCatIndex - 1 + categories.length) % categories.length;
-        setSelectedCategory(categories[prevCatIndex]);
-        const prevCatDishes = allItems.filter(
-          (item) => item.categoryId === categories[prevCatIndex].id && item.isAvailable !== false
-        );
-        return Math.max(0, prevCatDishes.length - 1);
-      }
+      if (displayDishes.length <= 1) return 0;
+      return (prevIndex - 1 + displayDishes.length) % displayDishes.length;
     });
-  }, [categories, selectedCategory.id, allItems]);
-
-  // Select a category manually
-  const handleSelectCategory = (category: Category) => {
-    if (category.id !== selectedCategory.id) {
-      setDirection(1);
-      setSelectedCategory(category);
-      setCurrentDishIndex(0);
-      setProgressPercent(0);
-    }
-  };
-
-  // Select a dish index manually
-  const handleSelectDishIndex = (index: number) => {
-    setDirection(index > currentDishIndex ? 1 : -1);
-    setCurrentDishIndex(index);
-    setProgressPercent(0);
-  };
+  }, [displayDishes.length]);
 
   // Fullscreen toggle logic
   const toggleFullscreen = useCallback(() => {
@@ -228,7 +177,7 @@ export const App: React.FC = () => {
     window.location.hash = '#/admin';
   };
 
-  // Listen to keyboard shortcuts: F for fullscreen, Ctrl+Shift+A for Admin
+  // Keyboard shortcuts
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -236,7 +185,10 @@ export const App: React.FC = () => {
 
     const handleKeyDown = (e: KeyboardEvent) => {
       // Admin shortcut: Ctrl + Shift + A or Alt + A
-      if ((e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) || (e.altKey && (e.key === 'A' || e.key === 'a'))) {
+      if (
+        (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) ||
+        (e.altKey && (e.key === 'A' || e.key === 'a'))
+      ) {
         e.preventDefault();
         handleOpenAdmin();
         return;
@@ -297,48 +249,37 @@ export const App: React.FC = () => {
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#F9F6E8] cream-pattern flex flex-col justify-between font-sans select-none">
       
-      {/* 1. Header with Diagonal Stripes, Round Logo & Category Title */}
+      {/* 1. Header: Clean & Minimalist (Logo + MTA FOOD HOUSE + Clock only) */}
       <Header
-        currentCategory={selectedCategory}
         config={config}
         onToggleFullscreen={toggleFullscreen}
         isFullscreen={isFullscreen}
-        dishCount={dishesInCurrentCategory.length}
-        currentDishIndex={currentDishIndex}
         onOpenAdmin={handleOpenAdmin}
       />
 
-      {/* 2. Main Center Body: Hero Showcase & Optional Preview Sidebar */}
-      <main className="relative flex-1 w-full flex items-center justify-between overflow-hidden">
+      {/* 2. Main Center Body: Full-Screen Hero Showcase (No sidebar, no category clutter) */}
+      <main className="relative flex-1 w-full flex items-center justify-center overflow-hidden">
         {currentDish ? (
           <DishShowcase dish={currentDish} direction={direction} />
         ) : (
           <div className="w-full flex items-center justify-center text-[#005826] font-bold text-xl">
-            Keine Gerichte in dieser Kategorie verfügbar.
+            Keine Gerichte verfügbar.
           </div>
         )}
-
-        {/* Right-hand side menu glance for TV viewers */}
-        <CategoryPreviewList
-          dishes={dishesInCurrentCategory}
-          currentDishIndex={currentDishIndex}
-          onSelectDish={handleSelectDishIndex}
-        />
       </main>
 
-      {/* 3. Bottom Bar: Countdown Timer, Category Switcher & Dish Dots */}
-      <CategoryBar
-        categories={categories}
-        currentCategory={selectedCategory}
-        dishesInCurrentCategory={dishesInCurrentCategory}
-        currentDishIndex={currentDishIndex}
-        onSelectCategory={handleSelectCategory}
-        onSelectDishIndex={handleSelectDishIndex}
-        progressPercent={progressPercent}
-        isPaused={isPaused}
-      />
+      {/* 3. Bottom Edge: Subtle 3px Timer Progress Bar & MTA Ribbon */}
+      <div className="w-full flex-shrink-0 z-20">
+        <div className="w-full h-1 bg-[#005826]/10 overflow-hidden relative">
+          <div
+            className="h-full bg-gradient-to-r from-[#F4C414] via-[#FFE066] to-[#F4C414] transition-all duration-100 ease-linear"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+        <div className="h-1.5 w-full mta-stripes-slim" />
+      </div>
 
-      {/* 4. Hidden / Floating Kiosk TV Controls (auto-hides on idle) */}
+      {/* 4. Hidden Floating Kiosk TV Controls (auto-hides on idle) */}
       <KioskControls
         isPaused={isPaused}
         onTogglePlay={() => setIsPaused(!isPaused)}
@@ -354,7 +295,7 @@ export const App: React.FC = () => {
         onOpenAdmin={handleOpenAdmin}
       />
 
-      {/* 5. TV Mode Hint Toast (Discreetly notifies staff) */}
+      {/* 5. TV Mode Hint Toast (Discreetly notifies staff in German) */}
       {showKioskToast && !isFullscreen && !isAdminOpen && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 bg-[#005826]/90 text-[#F9F6E8] text-xs font-bold px-4 py-2 rounded-full shadow-lg border border-[#F4C414]/40 backdrop-blur-md flex items-center gap-2 animate-bounce">
           <span className="w-2 h-2 rounded-full bg-[#F4C414]" />
@@ -368,7 +309,7 @@ export const App: React.FC = () => {
         </div>
       )}
 
-      {/* 6. Admin Auth Modal (PIN / GitHub Token) */}
+      {/* 6. Admin Auth Modal (Russian) */}
       {showAuthModal && (
         <AdminAuthModal
           initialSettings={ghSettings}
@@ -377,7 +318,7 @@ export const App: React.FC = () => {
         />
       )}
 
-      {/* 7. Full Admin Panel Overlay */}
+      {/* 7. Full Admin Panel Overlay (Russian) */}
       {isAdminOpen && (
         <AdminPanel
           initialConfig={config}

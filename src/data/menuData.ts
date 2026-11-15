@@ -93,12 +93,30 @@ export const CATEGORIES: Category[] = [
 ];
 
 export const MENU_ITEMS: Dish[] = [
-  // Category 1: Wareniki & Pelmeni
+  {
+    id: "wareniki-fleisch",
+    orderNumber: "1.",
+    name: "Wareniki mit Fleischfüllung",
+    subtitle: "Der beliebte osteuropäische Klassiker",
+    description: "Handgemachte Teigtaschen mit saftiger Hähnchenfleischfüllung, serviert mit goldbraun gebratenen Röstzwiebeln und hausgemachtem Joghurt-Dip.",
+    price: 12.0,
+    priceFormatted: "12,00 €",
+    categoryId: "wareniki-pelmeni",
+    image: "./dishes/vareniki-s-mjasom-removebg-preview.png",
+    badge: "Hausrezept",
+    badgeType: "green",
+    allergens: "Allergene: A (Weizen), G (Milch / Laktose)",
+    portion: "9 Stück",
+    isVegetarian: false,
+    isBestseller: true,
+    isAvailable: true,
+    tags: ["Hausgemacht", "Tradition"],
+  },
   {
     id: "wareniki-kartoffel",
-    orderNumber: "1.",
+    orderNumber: "2.",
     name: "Wareniki mit Kartoffel",
-    subtitle: "Der beliebte osteuropäische Klassiker",
+    subtitle: "Klassiker nach Großmutters Art",
     description: "Zarte Teigtaschen gefüllt mit samtigem Kartoffelpüree, garniert mit knusprig gebratenen Röstzwiebeln, frischen Gartenkräutern und hausgemachtem Joghurt-Dip.",
     price: 9.90,
     priceFormatted: "9,90 €",
