@@ -159,12 +159,12 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                 </motion.div>
               </div>
 
-              {/* 3. Expressive Golden Price Badge + Anchored Tax & Freshness Status (STRICTLY ANCHORED AT BOTTOM) */}
+              {/* 3. Expressive Golden Price Badge + Clean Tax Note (STRICTLY ANCHORED AT BOTTOM) */}
               <motion.div
                 initial={{ opacity: 0, y: 20, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: 0.3, type: 'spring', stiffness: 220, damping: 22 }}
-                className="h-[14.5vh] min-h-[95px] flex-shrink-0 flex items-center gap-[2.4vw] pt-[1vh]"
+                className="h-[14.5vh] min-h-[95px] flex-shrink-0 flex items-center gap-[2.4vw]"
               >
                 {/* Expressive Golden Price Plate with Soft Volumetric Shadow */}
                 <div className="relative flex-shrink-0">
@@ -180,16 +180,10 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                   </div>
                 </div>
 
-                {/* Anchored German Tax & Freshness Status */}
-                <div className="flex flex-col justify-center gap-[0.5vh] flex-shrink-0">
-                  <div className="flex items-center gap-[0.55vw] text-[#FDFBF7] font-black text-[clamp(1.25rem,1.9vw,2.45rem)] tracking-wide">
-                    <Sparkles className="w-[2.8vh] h-[2.8vh] min-w-[20px] min-h-[20px] text-[#F4C414] fill-[#F4C414] flex-shrink-0" />
-                    <span className="whitespace-nowrap">Inkl. MwSt.</span>
-                  </div>
-                  <div className="flex items-center gap-[0.5vw] text-[#F4C414] font-bold text-[clamp(0.95rem,1.35vw,1.75rem)] tracking-[0.08em] uppercase">
-                    <span className="w-[0.9vh] h-[0.9vh] min-w-[6px] min-h-[6px] rounded-full bg-[#F4C414] flex-shrink-0" />
-                    <span className="whitespace-nowrap">Frisch zubereitet</span>
-                  </div>
+                {/* German Tax Note Only */}
+                <div className="flex items-center gap-[0.6vw] text-[#FDFBF7] font-black text-[clamp(1.3rem,2vw,2.6rem)] tracking-wide flex-shrink-0">
+                  <Sparkles className="w-[2.8vh] h-[2.8vh] min-w-[20px] min-h-[20px] text-[#F4C414] fill-[#F4C414] flex-shrink-0" />
+                  <span className="whitespace-nowrap">Inkl. MwSt.</span>
                 </div>
               </motion.div>
 
