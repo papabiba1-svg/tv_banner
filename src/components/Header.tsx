@@ -60,26 +60,26 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="relative w-full z-30 select-none flex-shrink-0">
       {/* 1. Signature MTA Diagonal Stripes Ribbon */}
-      <div className="h-2.5 w-full mta-stripes shadow-md relative">
+      <div className="h-[1vh] min-h-[8px] w-full mta-stripes shadow-md relative">
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-transparent pointer-events-none" />
       </div>
 
-      {/* 2. Main Minimalist Premium Header Bar */}
-      <div className="bg-[#F9F6E8]/90 backdrop-blur-md border-b border-[#005826]/15 px-8 md:px-14 py-4 flex items-center justify-between shadow-sm relative">
+      {/* 2. Main Minimalist Premium Full-Width Header Bar */}
+      <div className="bg-[#F9F6E8]/90 backdrop-blur-md border-b-2 border-[#005826]/15 px-[3.5vw] py-[1.5vh] flex items-center justify-between shadow-sm relative">
         
         {/* Left: Brand Logo + Restaurant Name */}
-        <div className="flex items-center gap-4 md:gap-5">
+        <div className="flex items-center gap-[1.5vw]">
           <div className="relative group">
             <button
               onClick={handleLogoClick}
               title="Vollbildmodus (3x klicken für Admin-Bereich)"
-              className="focus:outline-none transition-transform hover:scale-105 active:scale-95"
+              className="focus:outline-none transition-transform hover:scale-105 active:scale-95 block"
             >
               <div className="relative">
                 <img
                   src={resolveAssetUrl(config.logoUrl || './logo.png')}
                   alt="MTA Food House"
-                  className="w-16 h-16 md:w-20 md:h-20 rounded-full object-contain shadow-lg ring-2 ring-[#005826]/20 group-hover:ring-[#F4C414] transition-all bg-[#F9F6E8]"
+                  className="w-[7.2vh] h-[7.2vh] min-w-[48px] min-h-[48px] rounded-full object-contain shadow-lg ring-2 ring-[#005826]/25 group-hover:ring-[#F4C414] transition-all bg-[#F9F6E8]"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = resolveAssetUrl('./logo.png');
                   }}
@@ -100,17 +100,22 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           </div>
 
-          <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-[#005826] leading-none uppercase font-display drop-shadow-sm">
+          <div className="flex flex-col justify-center">
+            <h1 className="text-[clamp(1.4rem,2.6vw,3.4rem)] font-black tracking-tight text-[#005826] leading-none uppercase font-display drop-shadow-sm">
               {config.restaurantName || 'MTA FOOD HOUSE'}
             </h1>
+            {config.slogan && (
+              <span className="text-[clamp(0.75rem,1vw,1.25rem)] font-bold text-[#005826]/70 tracking-wide mt-[0.4vh]">
+                {config.slogan}
+              </span>
+            )}
           </div>
         </div>
 
         {/* Right: Elegant Digital Clock Only */}
-        <div className="flex items-center gap-2.5 bg-white/70 backdrop-blur-md px-5 py-2 rounded-2xl border border-[#005826]/15 shadow-sm">
-          <Clock size={20} className="text-[#F4C414]" />
-          <span className="font-mono text-xl md:text-2xl lg:text-3xl font-black text-[#005826] tracking-widest leading-none">
+        <div className="flex items-center gap-[0.8vw] bg-white/80 backdrop-blur-md px-[1.8vw] py-[1vh] rounded-2xl border-2 border-[#005826]/15 shadow-sm">
+          <Clock className="w-[2.6vh] h-[2.6vh] min-w-[18px] min-h-[18px] text-[#F4C414]" />
+          <span className="font-mono text-[clamp(1.2rem,2.2vw,2.8rem)] font-black text-[#005826] tracking-widest leading-none">
             {time || '--:--:--'}
           </span>
         </div>
