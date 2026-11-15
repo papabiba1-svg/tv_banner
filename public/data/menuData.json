@@ -35,7 +35,7 @@
       "name": "Wareniki mit Kartoffel",
       "subtitle": "Der beliebte osteuropäische Klassiker",
       "description": "Zarte Teigtaschen gefüllt mit samtigem Kartoffelpüree, garniert mit knusprig gebratenen Röstzwiebeln, frischen Gartenkräutern und hausgemachtem Joghurt-Dip.",
-      "price": 9.90,
+      "price": 9.9,
       "priceFormatted": "9,90 €",
       "categoryId": "wareniki-pelmeni",
       "image": "./dishes/wareniki-kartoffel.png",
@@ -46,7 +46,11 @@
       "isVegetarian": true,
       "isBestseller": true,
       "isAvailable": true,
-      "tags": ["Vegetarisch", "Hausgemacht", "Tradition"]
+      "tags": [
+        "Vegetarisch",
+        "Hausgemacht",
+        "Tradition"
+      ]
     },
     {
       "id": "pelmeni-sibirisch",
@@ -54,7 +58,7 @@
       "name": "Sibirische Pelmeni",
       "subtitle": "Herzhafte Rind- & Schweinefleischfüllung",
       "description": "Klassische handgeformte Pelmeni mit saftiger Füllung aus erlesenem Fleisch, geschmolzener Bauernbutter, frisch gemahlenem schwarzem Pfeffer, Petersilie und Sauerrahm.",
-      "price": 11.50,
+      "price": 11.5,
       "priceFormatted": "11,50 €",
       "categoryId": "wareniki-pelmeni",
       "image": "./dishes/pelmeni-sibirisch.png",
@@ -64,7 +68,11 @@
       "portion": "15 Stück • 340g",
       "isBestseller": true,
       "isAvailable": true,
-      "tags": ["100% Fleisch", "Frisch gekocht", "Tradition"]
+      "tags": [
+        "100% Fleisch",
+        "Frisch gekocht",
+        "Tradition"
+      ]
     },
     {
       "id": "pelmeni-gebraten",
@@ -72,7 +80,7 @@
       "name": "Gebratene Pelmeni Crispy",
       "subtitle": "Knusprig in der Pfanne goldbraun geschwenkt",
       "description": "In Sesamöl kross angebratene Fleischpelmeni, bestreut mit Frühlingszwiebeln und geröstetem Sesam, serviert mit würzigem Paprika-Knoblauch-Dip.",
-      "price": 12.20,
+      "price": 12.2,
       "priceFormatted": "12,20 €",
       "categoryId": "wareniki-pelmeni",
       "image": "./dishes/pelmeni-gebraten.png",
@@ -82,7 +90,10 @@
       "portion": "14 Stück • 330g",
       "isSpicy": true,
       "isAvailable": true,
-      "tags": ["Extra Knusprig", "Würziger Dip"]
+      "tags": [
+        "Extra Knusprig",
+        "Würziger Dip"
+      ]
     },
     {
       "id": "wareniki-kirsche",
@@ -90,7 +101,7 @@
       "name": "Wareniki mit Sauerkirschen",
       "subtitle": "Süßer Fruchttraum nach Großmutters Art",
       "description": "Süße handgemachte Teigtaschen mit saftigen Sauerkirschen, serviert mit Bourbon-Puderzucker, frischer Minze und samtigem Kirsch-Fruchtspiegel.",
-      "price": 10.50,
+      "price": 10.5,
       "priceFormatted": "10,50 €",
       "categoryId": "wareniki-pelmeni",
       "image": "./dishes/wareniki-kirsche.png",
@@ -100,7 +111,11 @@
       "portion": "8 Stück • 290g",
       "isVegetarian": true,
       "isAvailable": true,
-      "tags": ["Dessert", "Vegetarisch", "Fruchtig"]
+      "tags": [
+        "Dessert",
+        "Vegetarisch",
+        "Fruchtig"
+      ]
     },
     {
       "id": "burger-house",
@@ -108,7 +123,7 @@
       "name": "MTA House Burger",
       "subtitle": "Unser legendärer Signature-Burger",
       "description": "200g feinstes Black Angus Beef auf getoastetem Brioche-Bun, geschmolzener Vintage Cheddar, krosser Bacon, Strauchtomaten, Essiggurken, karamellisierte Zwiebeln & MTA Spezial-Sauce.",
-      "price": 13.90,
+      "price": 13.9,
       "priceFormatted": "13,90 €",
       "categoryId": "burgers",
       "image": "./dishes/burger-house.png",
@@ -118,7 +133,11 @@
       "portion": "Inkl. Pommes Frites • 450g",
       "isBestseller": true,
       "isAvailable": true,
-      "tags": ["Black Angus", "Inkl. Beilage", "Brioche"]
+      "tags": [
+        "Black Angus",
+        "Inkl. Beilage",
+        "Brioche"
+      ]
     },
     {
       "id": "burger-crispy-chicken",
@@ -126,7 +145,7 @@
       "name": "Crispy Buttermilk Chicken Burger",
       "subtitle": "Extra kross paniertes Hähnchenfilet",
       "description": "Goldbraun gebackenes Hähnchenbrustfilet in Buttermilch-Panade, hausgemachter Rotkohl-Coleslaw, geschmolzener Käse, knackiger Salat & Smoky Honey-Mustard Cream.",
-      "price": 12.90,
+      "price": 12.9,
       "priceFormatted": "12,90 €",
       "categoryId": "burgers",
       "image": "./dishes/burger-crispy-chicken.png",
@@ -135,7 +154,11 @@
       "allergens": "Allergene: A (Weizen), C (Ei), G (Milch), J (Senf)",
       "portion": "Inkl. Pommes Frites • 420g",
       "isAvailable": true,
-      "tags": ["Knusprig", "Zartes Hähnchen", "Hausgemacht"]
+      "tags": [
+        "Knusprig",
+        "Zartes Hähnchen",
+        "Hausgemacht"
+      ]
     },
     {
       "id": "borsch-traditionell",
@@ -143,7 +166,7 @@
       "name": "Traditioneller Borschtsch",
       "subtitle": "Mit zartem Rindfleisch & Pampuschka",
       "description": "Kräftig gekochte Rote-Bete-Suppe mit zart gegartem Rindfleisch, frischem Kohl, Kartoffeln, Dill und einem großzügigen Löffel Crème fraîche. Serviert mit heißem Knoblauch-Hefegebäck.",
-      "price": 9.50,
+      "price": 9.5,
       "priceFormatted": "9,50 €",
       "categoryId": "suppen-special",
       "image": "./dishes/borsch-traditionell.png",
@@ -152,7 +175,11 @@
       "allergens": "Allergene: A (Weizen), G (Milch), I (Sellerie)",
       "portion": "450ml • Inkl. 1 Pampuschka",
       "isAvailable": true,
-      "tags": ["Traditionssuppe", "Heiß serviert", "Mit Knoblauchbrot"]
+      "tags": [
+        "Traditionssuppe",
+        "Heiß serviert",
+        "Mit Knoblauchbrot"
+      ]
     },
     {
       "id": "hausgemachte-limonade",
@@ -160,7 +187,7 @@
       "name": "MTA Hausgemachte Limonade",
       "subtitle": "Eiskalt & natürlich aromatisiert",
       "description": "Frisch gepresster Zitronen- & Limettensaft mit marokkanischer Minze, leichtem Rohrzuckersirup und prickelndem Quellwasser auf Crushed Ice serviert.",
-      "price": 4.50,
+      "price": 4.5,
       "priceFormatted": "4,50 €",
       "categoryId": "suppen-special",
       "image": "./dishes/hausgemachte-limonade.png",
@@ -170,9 +197,12 @@
       "portion": "0,5 Liter",
       "isVegetarian": true,
       "isAvailable": true,
-      "tags": ["Erfrischend", "Ohne Konservierungsstoffe", "Eiskalt"]
+      "tags": [
+        "Erfrischend",
+        "Ohne Konservierungsstoffe",
+        "Eiskalt"
+      ]
     }
   ],
-  "updatedAt": "2026-11-15T16:40:00Z"
+  "updatedAt": "2026-11-15T17:44:42.882Z"
 }
-
