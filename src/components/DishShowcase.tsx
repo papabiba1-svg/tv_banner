@@ -53,7 +53,7 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
             <div className="col-span-6 h-full flex flex-col items-center justify-center relative z-10 overflow-hidden">
               
               {/* Decorative Culinary Halo Ring behind the plate */}
-              <div className="absolute w-[34vw] h-[34vw] max-w-[50vh] max-h-[50vh] rounded-full border-2 border-[#005826]/10 bg-gradient-to-br from-white/65 via-white/25 to-transparent shadow-[0_20px_50px_rgba(0,88,38,0.07)] pointer-events-none -z-10" />
+              <div className="absolute w-[37vw] h-[37vw] max-w-[55vh] max-h-[55vh] rounded-full border-2 border-[#005826]/10 bg-gradient-to-br from-white/65 via-white/25 to-transparent shadow-[0_20px_50px_rgba(0,88,38,0.07)] pointer-events-none -z-10" />
 
               {/* Plate Entrance Animation */}
               <motion.div
@@ -83,7 +83,7 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                 {/* Gentle swaying and floating animation */}
                 <motion.div
                   animate={{
-                    y: [0, -10, 0],
+                    y: [0, -8, 0],
                     rotate: [0, 1.2, 0, -1.2, 0],
                   }}
                   transition={{
@@ -93,11 +93,11 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                   }}
                   className="relative flex items-center justify-center max-w-full max-h-full"
                 >
-                  {/* Large Food Plate Image */}
+                  {/* Large Food Plate Image (Enlarged while strictly respecting viewport and layout bounds) */}
                   <img
                     src={resolveAssetUrl(dish.image)}
                     alt={dish.name}
-                    className="w-auto h-auto max-w-[38vw] max-h-[54vh] object-contain plate-drop-shadow filter select-none pointer-events-none"
+                    className="w-auto h-auto max-w-[42vw] max-h-[59vh] object-contain plate-drop-shadow filter select-none pointer-events-none"
                     loading="eager"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/vareniki-s-mjasom-removebg-preview.png');
@@ -116,7 +116,7 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="absolute bottom-[2vh] w-[26vw] max-w-[42vh] h-[2.5vh] bg-[#00421C]/25 rounded-[100%] blur-2xl pointer-events-none -z-10"
+                  className="absolute bottom-[2vh] w-[30vw] max-w-[46vh] h-[2.5vh] bg-[#00421C]/25 rounded-[100%] blur-2xl pointer-events-none -z-10"
                 />
               </motion.div>
             </div>
@@ -156,18 +156,20 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                 )}
               </div>
 
-              {/* 3. Massive Golden Price Plate with Intense Ambient Glow (STRICTLY ANCHORED AT BOTTOM) */}
+              {/* 3. Massive Golden Price Plate with Soft Uniform Shadow (STRICTLY ANCHORED AT BOTTOM) */}
               <motion.div
                 initial={{ opacity: 0, y: 22, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: 0.32, type: 'spring', stiffness: 220, damping: 20 }}
                 className="h-[14vh] min-h-[95px] flex-shrink-0 flex items-center gap-[2.6vw] overflow-visible"
               >
-                {/* Massive Golden Price Badge */}
+                {/* Massive Golden Price Badge with soft, uniform volumetric shadow */}
                 <div className="relative flex-shrink-0">
-                  <div className="absolute -inset-3 bg-gradient-to-r from-[#F4C414] via-[#FFE066] to-[#F4C414] rounded-[2.6rem] blur-xl opacity-80 animate-pulse pointer-events-none" />
-                  <div className="relative bg-gradient-to-r from-[#F4C414] via-[#FFD738] to-[#F4C414] border-[5px] border-[#005826] rounded-[2.4rem] px-[3.8vw] py-[1.8vh] shadow-[0_18px_45px_rgba(244,196,20,0.55)] flex items-baseline">
-                    <span className="text-[clamp(3.2rem,6.8vw,8.5rem)] font-black text-[#00421C] font-mono tracking-tight leading-none drop-shadow-md">
+                  <div
+                    style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)' }}
+                    className="relative bg-gradient-to-r from-[#F4C414] via-[#FFD738] to-[#F4C414] border-[5px] border-[#005826] rounded-[2.4rem] px-[3.8vw] py-[1.8vh] flex items-baseline"
+                  >
+                    <span className="text-[clamp(3.2rem,6.8vw,8.5rem)] font-black text-[#00421C] font-mono tracking-tight leading-none drop-shadow-sm">
                       {dish.priceFormatted}
                     </span>
                   </div>
