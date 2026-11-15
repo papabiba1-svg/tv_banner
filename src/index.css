@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-cream: #F9F6E8;
+  --color-green: #005826;
+  --color-yellow: #F4C414;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #F9F6E8;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0c1810;
+}
+
+/* MTA Food House signature diagonal stripes ribbon */
+.mta-stripes {
+  background: repeating-linear-gradient(
+    -45deg,
+    #005826 0px,
+    #005826 14px,
+    #ffffff 14px,
+    #ffffff 20px,
+    #F4C414 20px,
+    #F4C414 34px,
+    #ffffff 34px,
+    #ffffff 40px
+  );
+}
+
+.mta-stripes-slim {
+  background: repeating-linear-gradient(
+    -45deg,
+    #005826 0px,
+    #005826 8px,
+    #ffffff 8px,
+    #ffffff 11px,
+    #F4C414 11px,
+    #F4C414 19px,
+    #ffffff 19px,
+    #ffffff 22px
+  );
+}
+
+/* Subtle textured cream background */
+.cream-pattern {
+  background-color: #F9F6E8;
+  background-image: radial-gradient(rgba(0, 88, 38, 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom plate shadow */
+.plate-drop-shadow {
+  filter: drop-shadow(0 25px 25px rgba(0, 40, 15, 0.28)) drop-shadow(0 10px 10px rgba(0, 0, 0, 0.12));
+}
+
+/* Custom scrollbar hiding */
+::-webkit-scrollbar {
+  display: none;
+}
