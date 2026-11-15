@@ -11,7 +11,7 @@ interface DishShowcaseProps {
 
 export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-between px-[3.5vw] py-[1.5vh] overflow-hidden">
+    <div className="relative w-full h-full flex flex-col justify-between px-[3.5vw] py-[1.2vh] overflow-hidden">
       
       {/* Full-screen ambient background glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -26,41 +26,41 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.48 }}
+          transition={{ duration: 0.42 }}
           className="w-full h-full flex flex-col justify-between relative z-10 overflow-hidden"
         >
-          {/* TOP ROW: Strictly Centered Single-Line Dish Title (High Z-Index, Never Overlapped) */}
+          {/* TOP ROW: Strictly Centered Single-Line Dish Title (Fixed Viewport Slot, High Z-Index, Never Overlapped) */}
           <motion.div
-            initial={{ opacity: 0, y: -22 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.08, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full flex-shrink-0 flex flex-col items-center justify-center text-center pt-[0.2vh] pb-[1vh] relative z-30"
+            transition={{ delay: 0.08, duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full h-[9vh] max-h-[72px] flex-shrink-0 flex flex-col items-center justify-center text-center relative z-30"
           >
             <h2
               style={{ whiteSpace: 'nowrap' }}
-              className="w-full text-center whitespace-nowrap overflow-hidden text-ellipsis text-[clamp(2.6rem,5.6vw,7.4rem)] font-black text-[#005826] font-display tracking-tight leading-[1.04] drop-shadow-md px-[1vw]"
+              className="w-full text-center whitespace-nowrap overflow-hidden text-ellipsis text-[clamp(2.4rem,4.8vw,5.8rem)] font-black text-[#005826] font-display tracking-tight leading-none drop-shadow-md px-[1vw]"
             >
               {dish.name}
             </h2>
             {/* Centered Gold & Green Accent Line */}
-            <div className="w-[18vw] h-[0.8vh] min-h-[6px] bg-gradient-to-r from-transparent via-[#F4C414] to-transparent rounded-full mt-[0.8vh] shadow-sm" />
+            <div className="w-[18vw] h-[0.6vh] min-h-[4px] bg-gradient-to-r from-transparent via-[#F4C414] to-transparent rounded-full mt-[0.6vh] shadow-sm" />
           </motion.div>
 
           {/* MAIN CONTENT ROW: Two-Column Split strictly isolated from Top Title */}
-          <div className="flex-1 min-h-0 w-full grid grid-cols-12 items-center gap-[3.5vw] overflow-hidden relative z-10">
+          <div className="flex-1 min-h-0 w-full grid grid-cols-12 items-stretch gap-[3.5vw] overflow-hidden relative z-10 py-[0.5vh]">
             
-            {/* LEFT COLUMN (Cols 1..6): Large Food Plate Photo on Back Layer (z-10, will not overlap title) */}
+            {/* LEFT COLUMN (Cols 1..6): Large Food Plate Photo (strictly contained within viewport boundaries) */}
             <div className="col-span-6 h-full flex flex-col items-center justify-center relative z-10 overflow-hidden">
               
               {/* Decorative Culinary Halo Ring behind the plate */}
-              <div className="absolute w-[36vw] h-[36vw] max-w-[66vh] max-h-[66vh] rounded-full border-2 border-[#005826]/10 bg-gradient-to-br from-white/65 via-white/25 to-transparent shadow-[0_25px_70px_rgba(0,88,38,0.07)] pointer-events-none -z-10" />
+              <div className="absolute w-[34vw] h-[34vw] max-w-[50vh] max-h-[50vh] rounded-full border-2 border-[#005826]/10 bg-gradient-to-br from-white/65 via-white/25 to-transparent shadow-[0_20px_50px_rgba(0,88,38,0.07)] pointer-events-none -z-10" />
 
               {/* Plate Entrance Animation */}
               <motion.div
                 initial={{
-                  x: direction > 0 ? -80 : 80,
+                  x: direction > 0 ? -70 : 70,
                   opacity: 0,
-                  scale: 0.88,
+                  scale: 0.9,
                 }}
                 animate={{
                   x: 0,
@@ -68,9 +68,9 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                   scale: 1,
                 }}
                 exit={{
-                  x: direction > 0 ? 80 : -80,
+                  x: direction > 0 ? 70 : -70,
                   opacity: 0,
-                  scale: 0.88,
+                  scale: 0.9,
                 }}
                 transition={{
                   type: 'spring',
@@ -83,21 +83,21 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                 {/* Gentle swaying and floating animation */}
                 <motion.div
                   animate={{
-                    y: [0, -14, 0],
-                    rotate: [0, 1.4, 0, -1.4, 0],
+                    y: [0, -10, 0],
+                    rotate: [0, 1.2, 0, -1.2, 0],
                   }}
                   transition={{
                     duration: 6,
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="relative flex items-center justify-center"
+                  className="relative flex items-center justify-center max-w-full max-h-full"
                 >
                   {/* Large Food Plate Image */}
                   <img
                     src={resolveAssetUrl(dish.image)}
                     alt={dish.name}
-                    className="w-[45vw] h-[45vw] max-w-[68vh] max-h-[68vh] object-contain plate-drop-shadow filter select-none pointer-events-none"
+                    className="w-auto h-auto max-w-[38vw] max-h-[54vh] object-contain plate-drop-shadow filter select-none pointer-events-none"
                     loading="eager"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/vareniki-s-mjasom-removebg-preview.png');
@@ -108,71 +108,78 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                 {/* Breathing shadow underneath plate */}
                 <motion.div
                   animate={{
-                    scale: [1, 0.86, 1],
-                    opacity: [0.4, 0.22, 0.4],
+                    scale: [1, 0.88, 1],
+                    opacity: [0.38, 0.22, 0.38],
                   }}
                   transition={{
                     duration: 6,
                     repeat: Infinity,
                     ease: 'easeInOut',
                   }}
-                  className="absolute bottom-[2vh] w-[28vw] max-w-[48vh] h-[3vh] bg-[#00421C]/30 rounded-[100%] blur-2xl pointer-events-none -z-10"
+                  className="absolute bottom-[2vh] w-[26vw] max-w-[42vh] h-[2.5vh] bg-[#00421C]/25 rounded-[100%] blur-2xl pointer-events-none -z-10"
                 />
               </motion.div>
             </div>
 
-            {/* RIGHT COLUMN (Cols 7..12): Significantly Enlarged Description, Allergens & Massive Golden Price */}
-            <div className="col-span-6 h-full flex flex-col justify-center text-left pr-[1vw] space-y-[2.8vh] relative z-20">
+            {/* RIGHT COLUMN (Cols 7..12): Fixed Viewport Structure with Anchored Bottom Price Block */}
+            <div className="col-span-6 h-full flex flex-col justify-between text-left pr-[1vw] relative z-20 overflow-hidden">
               
-              {/* 1. Composition & Ingredients Block (Large High-Readability Font) */}
+              {/* 1. Composition & Ingredients Block (Rigidly bounded with flex-1 min-h-0 and line-clamp so text length never displaces price) */}
               <motion.div
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.18, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full bg-white/90 backdrop-blur-xl rounded-[2.2rem] px-[2.8vw] py-[2.8vh] border-l-[10px] border-[#005826] shadow-[0_24px_60px_-12px_rgba(0,40,15,0.15)] ring-1 ring-[#005826]/12"
+                transition={{ delay: 0.16, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="flex-1 min-h-0 w-full flex items-center bg-white/92 backdrop-blur-xl rounded-[2.2rem] px-[2.6vw] py-[2vh] border-l-[10px] border-[#005826] shadow-[0_20px_50px_-10px_rgba(0,40,15,0.12)] ring-1 ring-[#005826]/12 overflow-hidden mb-[1.5vh]"
               >
-                <p className="text-[clamp(1.5rem,2.7vw,3.6rem)] text-[#1E2922] font-black leading-[1.32]">
+                <p className="text-[clamp(1.35rem,2.2vw,3rem)] text-[#1E2922] font-black leading-[1.32] line-clamp-4 overflow-hidden text-ellipsis">
                   {dish.description}
                 </p>
               </motion.div>
 
-              {/* 2. Allergens Line (Significantly Enlarged Font & Icon) */}
-              {dish.allergens && (
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.28, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="inline-flex items-center gap-[1.1vw] self-start bg-[#005826]/10 border-[3px] border-[#005826]/25 px-[2.2vw] py-[1.4vh] rounded-2xl text-[clamp(1.25rem,2.1vw,2.7rem)] text-[#005826] font-black shadow-sm"
-                >
-                  <Info className="w-[3.6vh] h-[3.6vh] min-w-[26px] min-h-[26px] text-[#005826] flex-shrink-0" />
-                  <span>{dish.allergens}</span>
-                </motion.div>
-              )}
+              {/* 2. Allergens Line (Fixed Height Slot) */}
+              <div className="h-[6.5vh] min-h-[44px] flex-shrink-0 flex items-center mb-[1.5vh] overflow-hidden">
+                {dish.allergens ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.24, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="inline-flex items-center gap-[1vw] bg-[#005826]/10 border-[3px] border-[#005826]/25 px-[2vw] py-[0.9vh] rounded-2xl text-[clamp(1.15rem,1.8vw,2.4rem)] text-[#005826] font-black shadow-sm"
+                  >
+                    <Info className="w-[3.2vh] h-[3.2vh] min-w-[24px] min-h-[24px] text-[#005826] flex-shrink-0" />
+                    <span className="truncate">{dish.allergens}</span>
+                  </motion.div>
+                ) : (
+                  <div className="inline-flex items-center gap-[1vw] bg-[#005826]/5 border-[2px] border-[#005826]/15 px-[1.8vw] py-[0.8vh] rounded-2xl text-[clamp(1rem,1.5vw,2rem)] text-[#005826]/70 font-bold">
+                    <Info className="w-[2.8vh] h-[2.8vh] min-w-[20px] min-h-[20px] text-[#005826]/60 flex-shrink-0" />
+                    <span>Keine deklarationspflichtigen Allergene</span>
+                  </div>
+                )}
+              </div>
 
-              {/* 3. Massive Golden Price Plate with Intense Ambient Glow */}
+              {/* 3. Massive Golden Price Plate with Intense Ambient Glow (STRICTLY ANCHORED AT BOTTOM) */}
               <motion.div
-                initial={{ opacity: 0, y: 28, scale: 0.95 }}
+                initial={{ opacity: 0, y: 22, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 0.38, type: 'spring', stiffness: 220, damping: 20 }}
-                className="pt-[1vh] flex items-center gap-[2.6vw] flex-wrap"
+                transition={{ delay: 0.32, type: 'spring', stiffness: 220, damping: 20 }}
+                className="h-[14vh] min-h-[95px] flex-shrink-0 flex items-center gap-[2.6vw] overflow-visible"
               >
                 {/* Massive Golden Price Badge */}
-                <div className="relative">
-                  <div className="absolute -inset-3.5 bg-gradient-to-r from-[#F4C414] via-[#FFE066] to-[#F4C414] rounded-[2.6rem] blur-2xl opacity-80 animate-pulse pointer-events-none" />
-                  <div className="relative bg-gradient-to-r from-[#F4C414] via-[#FFD738] to-[#F4C414] border-[5px] border-[#005826] rounded-[2.4rem] px-[4.2vw] py-[2.6vh] shadow-[0_20px_50px_rgba(244,196,20,0.6)] flex items-baseline">
-                    <span className="text-[clamp(3.4rem,7.5vw,9.6rem)] font-black text-[#00421C] font-mono tracking-tight leading-none drop-shadow-md">
+                <div className="relative flex-shrink-0">
+                  <div className="absolute -inset-3 bg-gradient-to-r from-[#F4C414] via-[#FFE066] to-[#F4C414] rounded-[2.6rem] blur-xl opacity-80 animate-pulse pointer-events-none" />
+                  <div className="relative bg-gradient-to-r from-[#F4C414] via-[#FFD738] to-[#F4C414] border-[5px] border-[#005826] rounded-[2.4rem] px-[3.8vw] py-[1.8vh] shadow-[0_18px_45px_rgba(244,196,20,0.55)] flex items-baseline">
+                    <span className="text-[clamp(3.2rem,6.8vw,8.5rem)] font-black text-[#00421C] font-mono tracking-tight leading-none drop-shadow-md">
                       {dish.priceFormatted}
                     </span>
                   </div>
                 </div>
 
                 {/* Enlarged German Tax & Freshness Note */}
-                <div className="flex flex-col text-left justify-center space-y-[0.5vh]">
-                  <div className="flex items-center gap-[0.6vw] text-[#005826] font-black text-[clamp(1.3rem,2.1vw,2.7rem)] tracking-wide">
-                    <Sparkles className="w-[3.2vh] h-[3.2vh] min-w-[24px] min-h-[24px] text-[#F4C414] fill-[#F4C414]" />
-                    <span>Inkl. MwSt.</span>
+                <div className="flex flex-col text-left justify-center space-y-[0.4vh] flex-shrink-0">
+                  <div className="flex items-center gap-[0.6vw] text-[#005826] font-black text-[clamp(1.25rem,1.9vw,2.5rem)] tracking-wide">
+                    <Sparkles className="w-[3vh] h-[3vh] min-w-[22px] min-h-[22px] text-[#F4C414] fill-[#F4C414] flex-shrink-0" />
+                    <span className="whitespace-nowrap">Inkl. MwSt.</span>
                   </div>
-                  <span className="text-[clamp(1.1rem,1.65vw,2.1rem)] text-[#005826]/85 font-extrabold">
+                  <span className="text-[clamp(1.05rem,1.5vw,2rem)] text-[#005826]/85 font-extrabold whitespace-nowrap">
                     Frisch zubereitet
                   </span>
                 </div>

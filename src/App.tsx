@@ -291,7 +291,7 @@ export const App: React.FC = () => {
       />
 
       {/* 2. Main Center Body: Full-Screen 100vw Hero Showcase */}
-      <main className="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden">
+      <main className="relative flex-1 min-h-0 w-full h-full flex items-center justify-center overflow-hidden">
         {currentDish ? (
           <DishShowcase dish={currentDish} direction={direction} />
         ) : (
