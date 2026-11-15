@@ -11,11 +11,11 @@ interface DishShowcaseProps {
 
 export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) => {
   return (
-    <div className="relative w-full h-full flex items-center justify-center px-8 md:px-14 lg:px-20 overflow-hidden">
+    <div className="relative w-full h-full flex items-center justify-center px-12 md:px-16 overflow-hidden">
       
       {/* Dynamic ambient backdrop glow */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        <div className="w-[600px] h-[600px] lg:w-[850px] lg:h-[850px] rounded-full bg-gradient-to-tr from-[#F4C414]/15 via-[#005826]/8 to-transparent blur-3xl -translate-x-1/4 pointer-events-none" />
+        <div className="w-[750px] h-[750px] rounded-full bg-gradient-to-tr from-[#F4C414]/15 via-[#005826]/8 to-transparent blur-3xl -translate-x-1/4 pointer-events-none" />
       </div>
 
       <AnimatePresence mode="wait" custom={direction}>
@@ -26,10 +26,10 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.55 }}
-          className="w-full max-w-7xl grid grid-cols-12 items-center gap-8 lg:gap-16 relative z-10 py-6"
+          className="w-full max-w-7xl grid grid-cols-2 items-center gap-12 lg:gap-16 relative z-10 py-4"
         >
-          {/* LEFT: Animated Hero Dish Plate (cols 1..6) */}
-          <div className="col-span-12 lg:col-span-6 flex flex-col items-center justify-center relative">
+          {/* LEFT: Animated Hero Dish Plate (50%) */}
+          <div className="flex flex-col items-center justify-center relative">
             
             {/* Plate Entrance Animation */}
             <motion.div
@@ -59,8 +59,8 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
               {/* Gentle swaying and levitation floating animation */}
               <motion.div
                 animate={{
-                  y: [0, -14, 0],
-                  rotate: [0, 1.4, 0, -1.4, 0],
+                  y: [0, -12, 0],
+                  rotate: [0, 1.2, 0, -1.2, 0],
                 }}
                 transition={{
                   duration: 6,
@@ -73,10 +73,10 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                 <img
                   src={resolveAssetUrl(dish.image)}
                   alt={dish.name}
-                  className="w-[340px] h-[340px] sm:w-[420px] sm:h-[420px] md:w-[480px] md:h-[480px] lg:w-[520px] lg:h-[520px] xl:w-[600px] xl:h-[600px] object-contain plate-drop-shadow filter select-none pointer-events-none"
+                  className="w-[480px] h-[480px] lg:w-[520px] lg:h-[520px] max-h-[540px] object-contain plate-drop-shadow filter select-none pointer-events-none"
                   loading="eager"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/wareniki-kartoffel.png');
+                    (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/vareniki-s-mjasom-removebg-preview.png');
                   }}
                 />
               </motion.div>
@@ -97,11 +97,11 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
             </motion.div>
           </div>
 
-          {/* RIGHT: Cascading Glassmorphism Info & Price (cols 7..12) */}
-          <div className="col-span-12 lg:col-span-6 flex flex-col justify-center text-left">
+          {/* RIGHT: Cascading Glassmorphism Info & Price (50%) */}
+          <div className="flex flex-col justify-center text-left">
             
             {/* Premium Multi-layer Card */}
-            <div className="relative bg-white/75 backdrop-blur-2xl rounded-3xl p-7 md:p-10 shadow-[0_25px_60px_-15px_rgba(0,40,15,0.14)] border border-white/80 ring-1 ring-[#005826]/10 flex flex-col space-y-6">
+            <div className="relative bg-white/80 backdrop-blur-2xl rounded-3xl p-8 shadow-[0_25px_60px_-15px_rgba(0,40,15,0.14)] border border-white/80 ring-1 ring-[#005826]/10 flex flex-col space-y-6 max-w-2xl">
               
               {/* Top accent glow line */}
               <div className="absolute top-0 left-10 right-10 h-1 bg-gradient-to-r from-transparent via-[#F4C414] to-transparent rounded-full opacity-80" />

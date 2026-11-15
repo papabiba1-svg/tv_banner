@@ -34,6 +34,24 @@ export const App: React.FC = () => {
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [showKioskToast, setShowKioskToast] = useState<boolean>(true);
 
+  // Dynamic scale calculation to fit exact TV screen without cropping or overflow
+  const [scale, setScale] = useState<number>(1);
+
+  useEffect(() => {
+    const updateScale = () => {
+      // 1920 x 1080 standard 16:9 reference resolution
+      // 0.95 factor ensures safe margin for TV bezels / overscan
+      const availableWidth = window.innerWidth;
+      const availableHeight = window.innerHeight;
+      const scaleFactor = Math.min(availableWidth / 1920, availableHeight / 1080) * 0.95;
+      setScale(scaleFactor);
+    };
+
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
+
   // Admin state
   const [isAdminOpen, setIsAdminOpen] = useState<boolean>(false);
   const [showAuthModal, setShowAuthModal] = useState<boolean>(false);
@@ -247,36 +265,48 @@ export const App: React.FC = () => {
   }, [isPaused, isAdminOpen, slideDuration, handleNextDish]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#F9F6E8] cream-pattern flex flex-col justify-between font-sans select-none">
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#F9F6E8] flex items-center justify-center select-none font-sans">
       
-      {/* 1. Header: Clean & Minimalist (Logo + MTA FOOD HOUSE + Clock only) */}
-      <Header
-        config={config}
-        onToggleFullscreen={toggleFullscreen}
-        isFullscreen={isFullscreen}
-        onOpenAdmin={handleOpenAdmin}
-      />
+      {/* 16:9 Stage: Scaled to fit TV screen exactly with overscan safe margin */}
+      <div
+        style={{
+          width: 1920,
+          height: 1080,
+          transform: `scale(${scale})`,
+          transformOrigin: 'center center',
+          flexShrink: 0,
+        }}
+        className="relative w-[1920px] h-[1080px] bg-[#F9F6E8] cream-pattern flex flex-col justify-between overflow-hidden shadow-2xl"
+      >
+        {/* 1. Header: Clean & Minimalist (Logo + MTA FOOD HOUSE + Clock only) */}
+        <Header
+          config={config}
+          onToggleFullscreen={toggleFullscreen}
+          isFullscreen={isFullscreen}
+          onOpenAdmin={handleOpenAdmin}
+        />
 
-      {/* 2. Main Center Body: Full-Screen Hero Showcase (No sidebar, no category clutter) */}
-      <main className="relative flex-1 w-full flex items-center justify-center overflow-hidden">
-        {currentDish ? (
-          <DishShowcase dish={currentDish} direction={direction} />
-        ) : (
-          <div className="w-full flex items-center justify-center text-[#005826] font-bold text-xl">
-            Keine Gerichte verfügbar.
+        {/* 2. Main Center Body: Full-Screen Hero Showcase (No sidebar, no category clutter) */}
+        <main className="relative flex-1 w-full flex items-center justify-center overflow-hidden">
+          {currentDish ? (
+            <DishShowcase dish={currentDish} direction={direction} />
+          ) : (
+            <div className="w-full flex items-center justify-center text-[#005826] font-bold text-2xl">
+              Keine Gerichte verfügbar.
+            </div>
+          )}
+        </main>
+
+        {/* 3. Bottom Edge: Subtle 3px Timer Progress Bar & MTA Ribbon */}
+        <div className="w-full flex-shrink-0 z-20">
+          <div className="w-full h-1 bg-[#005826]/10 overflow-hidden relative">
+            <div
+              className="h-full bg-gradient-to-r from-[#F4C414] via-[#FFE066] to-[#F4C414] transition-all duration-100 ease-linear"
+              style={{ width: `${progressPercent}%` }}
+            />
           </div>
-        )}
-      </main>
-
-      {/* 3. Bottom Edge: Subtle 3px Timer Progress Bar & MTA Ribbon */}
-      <div className="w-full flex-shrink-0 z-20">
-        <div className="w-full h-1 bg-[#005826]/10 overflow-hidden relative">
-          <div
-            className="h-full bg-gradient-to-r from-[#F4C414] via-[#FFE066] to-[#F4C414] transition-all duration-100 ease-linear"
-            style={{ width: `${progressPercent}%` }}
-          />
+          <div className="h-1.5 w-full mta-stripes-slim" />
         </div>
-        <div className="h-1.5 w-full mta-stripes-slim" />
       </div>
 
       {/* 4. Hidden Floating Kiosk TV Controls (auto-hides on idle) */}
