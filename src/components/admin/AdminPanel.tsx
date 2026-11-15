@@ -26,6 +26,10 @@ import {
   saveStoredSettings,
   validateGitHubAccess,
 } from '../../services/githubApi';
+import {
+  saveStoredMenuData,
+  clearStoredMenuData,
+} from '../../services/menuStorage';
 import { DishEditorModal } from './DishEditorModal';
 
 interface AdminPanelProps {
@@ -90,38 +94,57 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     return matchesCategory && matchesSearch;
   });
 
+  // Immediate persistence helper: syncs directly to localStorage & updates parent App state
+  const syncAndPersist = (
+    nextItems: Dish[],
+    nextCategories: Category[] = categories,
+    nextConfig: MenuBoardConfig = config
+  ) => {
+    const updatedAt = new Date().toISOString();
+    const payload: MenuDataPayload = {
+      config: nextConfig,
+      categories: nextCategories,
+      items: nextItems,
+      updatedAt,
+    };
+    saveStoredMenuData(payload);
+    onUpdateMenuData(payload);
+  };
+
   // Toggle dish availability (В наличии / Скрыто)
   const handleToggleAvailability = (dishId: string) => {
-    setItems((prev) =>
-      prev.map((d) => (d.id === dishId ? { ...d, isAvailable: d.isAvailable === false } : d))
-    );
+    const next = items.map((d) => (d.id === dishId ? { ...d, isAvailable: d.isAvailable === false } : d));
+    setItems(next);
     setHasUnsavedChanges(true);
+    syncAndPersist(next);
   };
 
   // Quick inline price change
   const handleQuickPriceChange = (dishId: string, delta: number) => {
-    setItems((prev) =>
-      prev.map((d) => {
-        if (d.id === dishId) {
-          const newPrice = Math.max(0.5, Math.round((d.price + delta) * 10) / 10);
-          return {
-            ...d,
-            price: newPrice,
-            priceFormatted: formatEuroPrice(newPrice),
-          };
-        }
-        return d;
-      })
-    );
+    const next = items.map((d) => {
+      if (d.id === dishId) {
+        const newPrice = Math.max(0.5, Math.round((d.price + delta) * 10) / 10);
+        return {
+          ...d,
+          price: newPrice,
+          priceFormatted: formatEuroPrice(newPrice),
+        };
+      }
+      return d;
+    });
+    setItems(next);
     setHasUnsavedChanges(true);
+    syncAndPersist(next);
   };
 
   // Delete dish
   const handleDeleteDish = (dishId: string) => {
     const dish = items.find((d) => d.id === dishId);
     if (window.confirm(`Вы уверены, что хотите удалить блюдо "${dish?.name || dishId}"?`)) {
-      setItems((prev) => prev.filter((d) => d.id !== dishId));
+      const next = items.filter((d) => d.id !== dishId);
+      setItems(next);
       setHasUnsavedChanges(true);
+      syncAndPersist(next);
     }
   };
 
@@ -134,25 +157,35 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       setQueuedImages((prev) => [...prev, newImage]);
     }
 
-    setItems((prev) => {
-      const exists = prev.some((d) => d.id === savedDish.id);
-      if (exists) {
-        return prev.map((d) => (d.id === savedDish.id ? savedDish : d));
-      } else {
-        return [...prev, savedDish];
-      }
-    });
+    const exists = items.some((d) => d.id === savedDish.id);
+    const next = exists
+      ? items.map((d) => (d.id === savedDish.id ? savedDish : d))
+      : [...items, savedDish];
 
+    setItems(next);
     setEditingDish(undefined);
     setHasUnsavedChanges(true);
+    syncAndPersist(next);
   };
 
   // Category title / subtitle editor
   const handleUpdateCategory = (catId: string, name: string, subtitle: string) => {
-    setCategories((prev) =>
-      prev.map((c) => (c.id === catId ? { ...c, name, subtitle } : c))
-    );
+    const nextCategories = categories.map((c) => (c.id === catId ? { ...c, name, subtitle } : c));
+    setCategories(nextCategories);
     setHasUnsavedChanges(true);
+    syncAndPersist(items, nextCategories);
+  };
+
+  // Reset to factory defaults (1 dish)
+  const handleResetToFactoryDefaults = () => {
+    if (
+      window.confirm(
+        'ВНИМАНИЕ: Вы действительно хотите сбросить меню к исходному состоянию (1 блюдо)? Все локально добавленные позиции будут удалены.'
+      )
+    ) {
+      clearStoredMenuData();
+      window.location.reload();
+    }
   };
 
   // Save GitHub & PIN Settings
@@ -194,13 +227,53 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     });
 
     try {
-      // 1. Upload any new images first to public/dishes/{filename}
+      const remoteItems: Dish[] = [...items];
+
+      // 1. Process any dishes with Base64 photos and upload to public/dishes/{filename}
+      for (let i = 0; i < remoteItems.length; i++) {
+        const dish = remoteItems[i];
+        if (dish.image && dish.image.startsWith('data:image/')) {
+          const match = dish.image.match(/^data:image\/([a-zA-Z+]+);base64,(.+)$/);
+          if (match) {
+            const ext = match[1].includes('webp')
+              ? 'webp'
+              : match[1].includes('jpeg') || match[1].includes('jpg')
+              ? 'jpg'
+              : 'png';
+            const filename = `dish-${dish.id}.${ext}`;
+            const base64Data = match[2];
+
+            setPublishStatus({
+              type: 'info',
+              message: `Загрузка фотографии блюда: public/dishes/${filename}...`,
+            });
+
+            const imgResult = await uploadOrUpdateGitHubFile(
+              ghSettings.repo,
+              `public/dishes/${filename}`,
+              base64Data,
+              `Upload dish photo: ${filename}`,
+              ghSettings.branch,
+              ghSettings.token
+            );
+
+            if (imgResult.success) {
+              remoteItems[i] = {
+                ...dish,
+                image: `./dishes/${filename}`,
+              };
+            }
+          }
+        }
+      }
+
+      // Also upload any queued images
       for (const img of queuedImages) {
         setPublishStatus({
           type: 'info',
-          message: `Загрузка фотографии блюда: public/dishes/${img.filename}...`,
+          message: `Загрузка фотографии: public/dishes/${img.filename}...`,
         });
-        const imgResult = await uploadOrUpdateGitHubFile(
+        await uploadOrUpdateGitHubFile(
           ghSettings.repo,
           `public/dishes/${img.filename}`,
           img.base64,
@@ -208,17 +281,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           ghSettings.branch,
           ghSettings.token
         );
-        if (!imgResult.success) {
-          console.warn('Ошибка загрузки фото:', imgResult.error);
-        }
       }
 
       // 2. Prepare payload for public/data/menuData.json
+      const updatedAt = new Date().toISOString();
       const payload: MenuDataPayload = {
         config,
         categories,
-        items,
-        updatedAt: new Date().toISOString(),
+        items: remoteItems,
+        updatedAt,
       };
 
       const jsonString = JSON.stringify(payload, null, 2);
@@ -242,8 +313,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         throw new Error(commitResult.error || 'Ошибка коммита в GitHub');
       }
 
-      // 3. Update local state
+      // 3. Update local state & localStorage with clean payload
       onUpdateMenuData(payload);
+      saveStoredMenuData(payload);
       setQueuedImages([]);
       setHasUnsavedChanges(false);
 
@@ -294,10 +366,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
           {/* Right: Publish Button & Status */}
           <div className="flex items-center gap-3">
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-full text-xs font-bold shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              Сохранено в браузере
+            </span>
+
             {hasUnsavedChanges && (
-              <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-xs font-bold animate-pulse">
+              <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-xs font-bold animate-pulse shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-amber-500" />
-                Несохраненные изменения
+                Ожидает публикации на GitHub
               </span>
             )}
 
@@ -487,7 +564,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                             className="w-full h-full object-contain filter drop-shadow-sm"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
-                                resolveAssetUrl('./dishes/wareniki-kartoffel.png');
+                                resolveAssetUrl('./dishes/vareniki-s-mjasom-removebg-preview.png');
                             }}
                           />
                         </div>
@@ -733,8 +810,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     type="text"
                     value={config.slogan}
                     onChange={(e) => {
-                      setConfig({ ...config, slogan: e.target.value });
+                      const nextConfig = { ...config, slogan: e.target.value };
+                      setConfig(nextConfig);
                       setHasUnsavedChanges(true);
+                      syncAndPersist(items, categories, nextConfig);
                     }}
                     className="w-full px-3 py-2 bg-gray-50 border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
                   />
@@ -748,8 +827,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     type="text"
                     value={config.phoneOrWifi || ''}
                     onChange={(e) => {
-                      setConfig({ ...config, phoneOrWifi: e.target.value });
+                      const nextConfig = { ...config, phoneOrWifi: e.target.value };
+                      setConfig(nextConfig);
                       setHasUnsavedChanges(true);
+                      syncAndPersist(items, categories, nextConfig);
                     }}
                     className="w-full px-3 py-2 bg-gray-50 border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
                   />
@@ -765,8 +846,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   type="submit"
                   className="w-full py-2.5 bg-[#005826] text-[#F4C414] hover:bg-[#00421C] rounded-xl font-black text-xs uppercase tracking-wider shadow-md"
                 >
-                  Сохранить настройки
+                  Сохранить настройки GitHub
                 </button>
+
+                <div className="pt-4 border-t-2 border-red-200">
+                  <h4 className="text-xs font-black uppercase text-red-700 mb-1">
+                    Сброс данных
+                  </h4>
+                  <p className="text-xs text-gray-600 mb-3">
+                    Если необходимо удалить все локально добавленные блюда и вернуть заводское меню (1 блюдо).
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleResetToFactoryDefaults}
+                    className="w-full py-2 bg-red-50 text-red-700 hover:bg-red-100 border border-red-300 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors"
+                  >
+                    Сбросить всё меню к исходному состоянию
+                  </button>
+                </div>
               </form>
             </div>
           </div>

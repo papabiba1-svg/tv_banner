@@ -62,11 +62,12 @@ export const DishEditorModal: React.FC<DishEditorModalProps> = ({
 
   // Image state
   const [imagePreview, setImagePreview] = useState<string>(
-    initialDish?.image || './dishes/wareniki-kartoffel.png'
+    initialDish?.image || './dishes/vareniki-s-mjasom-removebg-preview.png'
   );
   const [compressedImage, setCompressedImage] = useState<{
     base64: string;
     filename: string;
+    dataUrl: string;
   } | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -78,11 +79,12 @@ export const DishEditorModal: React.FC<DishEditorModalProps> = ({
     try {
       setIsCompressing(true);
       setUploadError(null);
-      const res = await compressImageForMenu(file, 800);
+      const res = await compressImageForMenu(file, 650);
       setImagePreview(res.dataUrl);
       setCompressedImage({
         base64: res.base64,
         filename: res.filename,
+        dataUrl: res.dataUrl,
       });
     } catch (err: any) {
       setUploadError(err.message || 'Ошибка сжатия изображения');
@@ -95,10 +97,10 @@ export const DishEditorModal: React.FC<DishEditorModalProps> = ({
     e.preventDefault();
     if (!name.trim()) return;
 
-    // Build image path
-    let imagePath = initialDish?.image || './dishes/wareniki-kartoffel.png';
+    // Build image path: prefer base64 dataUrl so the image is immediately viewable and persistent in localStorage
+    let imagePath = initialDish?.image || './dishes/vareniki-s-mjasom-removebg-preview.png';
     if (compressedImage) {
-      imagePath = `./dishes/${compressedImage.filename}`;
+      imagePath = compressedImage.dataUrl;
     }
 
     const updatedDish: Dish = {
@@ -179,7 +181,7 @@ export const DishEditorModal: React.FC<DishEditorModalProps> = ({
                     alt="Предпросмотр"
                     className="w-full h-full object-contain filter drop-shadow-md group-hover:scale-105 transition-transform"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/wareniki-kartoffel.png');
+                      (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/vareniki-s-mjasom-removebg-preview.png');
                     }}
                   />
                   

@@ -16,12 +16,25 @@ import {
   getStoredSettings,
   saveStoredSettings,
 } from './services/githubApi';
+import {
+  getStoredMenuData,
+  saveStoredMenuData,
+} from './services/menuStorage';
 
 export const App: React.FC = () => {
-  // Menu data state
-  const [config, setConfig] = useState<MenuBoardConfig>(DEFAULT_CONFIG);
-  const [categories, setCategories] = useState<Category[]>(DEFAULT_CATEGORIES);
-  const [allItems, setAllItems] = useState<Dish[]>(DEFAULT_ITEMS);
+  // Menu data state: initialize directly from localStorage to ensure user-added dishes and images persist across refreshes
+  const [config, setConfig] = useState<MenuBoardConfig>(() => {
+    const local = getStoredMenuData();
+    return local?.config || DEFAULT_CONFIG;
+  });
+  const [categories, setCategories] = useState<Category[]>(() => {
+    const local = getStoredMenuData();
+    return local?.categories?.length ? local.categories : DEFAULT_CATEGORIES;
+  });
+  const [allItems, setAllItems] = useState<Dish[]>(() => {
+    const local = getStoredMenuData();
+    return local?.items?.length ? local.items : DEFAULT_ITEMS;
+  });
 
   // TV display slider state
   const [currentDishIndex, setCurrentDishIndex] = useState<number>(0);
@@ -94,21 +107,41 @@ export const App: React.FC = () => {
       });
       if (res.ok) {
         const payload: MenuDataPayload = await res.json();
+        const local = getStoredMenuData();
+
+        // If local user data exists, check timestamps to never overwrite newer local additions
+        if (local && local.updatedAt && payload.updatedAt) {
+          const localTime = new Date(local.updatedAt).getTime();
+          const remoteTime = new Date(payload.updatedAt).getTime();
+          if (remoteTime <= localTime) {
+            // Local user modifications in localStorage are newer or equal; preserve them
+            return;
+          }
+        }
+
         if (payload.config) {
           setConfig(payload.config);
           if (payload.config.slideDurationSeconds) {
             setSlideDuration(payload.config.slideDurationSeconds);
           }
         }
-        if (payload.categories && payload.categories.length > 0) {
+        if (payload.categories && Array.isArray(payload.categories) && payload.categories.length > 0) {
           setCategories(payload.categories);
         }
-        if (payload.items && payload.items.length > 0) {
+        if (payload.items && Array.isArray(payload.items) && payload.items.length > 0) {
           setAllItems(payload.items);
         }
+
+        // Cache latest remote payload into localStorage
+        saveStoredMenuData({
+          config: payload.config,
+          categories: payload.categories,
+          items: payload.items || [],
+          updatedAt: payload.updatedAt,
+        });
       }
     } catch (err) {
-      console.warn('Fallback to local menuData.ts because remote menuData.json could not be loaded:', err);
+      console.warn('Fallback to local/cached menu data:', err);
     }
   }, []);
 
@@ -359,6 +392,7 @@ export const App: React.FC = () => {
             if (payload.config) setConfig(payload.config);
             if (payload.categories) setCategories(payload.categories);
             if (payload.items) setAllItems(payload.items);
+            saveStoredMenuData(payload);
           }}
           onCloseAdmin={handleCloseAdmin}
           onUpdateGhSettings={(newSettings) => {

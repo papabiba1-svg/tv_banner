@@ -46,7 +46,7 @@ export const CategoryPreviewList: React.FC<CategoryPreviewListProps> = ({
                   alt={dish.name}
                   className="w-full h-full object-contain filter drop-shadow-sm"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/wareniki-kartoffel.png');
+                    (e.target as HTMLImageElement).src = resolveAssetUrl('./dishes/vareniki-s-mjasom-removebg-preview.png');
                   }}
                 />
                 {isActive && (
