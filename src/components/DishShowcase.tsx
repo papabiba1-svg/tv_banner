@@ -29,25 +29,25 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
           transition={{ duration: 0.42 }}
           className="w-full h-full flex flex-col justify-between relative z-10 overflow-hidden"
         >
-          {/* TOP ROW: Strictly Centered Single-Line Dish Title (Fixed Viewport Slot, High Z-Index, Never Overlapped) */}
+          {/* TOP ROW: Strictly Centered Single-Line Dish Title (High Z-Index, Never Overlapped) */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.08, duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-[9vh] max-h-[72px] flex-shrink-0 flex flex-col items-center justify-center text-center relative z-30"
+            className="w-full flex-shrink-0 flex flex-col items-center justify-center text-center pt-[0.4vh] pb-[0.8vh] relative z-30"
           >
             <h2
               style={{ whiteSpace: 'nowrap' }}
-              className="w-full text-center whitespace-nowrap overflow-hidden text-ellipsis text-[clamp(2.4rem,4.8vw,5.8rem)] font-black text-[#005826] font-display tracking-tight leading-none drop-shadow-md px-[1vw]"
+              className="w-full text-center whitespace-nowrap overflow-hidden text-ellipsis text-[clamp(2.2rem,4.4vw,5.2rem)] font-black text-[#005826] font-display tracking-tight leading-none drop-shadow-md px-[1vw]"
             >
               {dish.name}
             </h2>
             {/* Centered Gold & Green Accent Line */}
-            <div className="w-[18vw] h-[0.6vh] min-h-[4px] bg-gradient-to-r from-transparent via-[#F4C414] to-transparent rounded-full mt-[0.6vh] shadow-sm" />
+            <div className="w-[18vw] h-[0.6vh] min-h-[4px] bg-gradient-to-r from-transparent via-[#F4C414] to-transparent rounded-full mt-[1vh] shadow-sm" />
           </motion.div>
 
-          {/* MAIN CONTENT ROW: Two-Column Split strictly isolated from Top Title */}
-          <div className="flex-1 min-h-0 w-full grid grid-cols-12 items-stretch gap-[3.5vw] overflow-hidden relative z-10 py-[0.5vh]">
+          {/* MAIN CONTENT ROW: Two-Column Split with clear separation from Title */}
+          <div className="flex-1 min-h-0 w-full grid grid-cols-12 items-stretch gap-[3.5vw] overflow-hidden relative z-10 pt-[2.5vh] pb-[0.5vh]">
             
             {/* LEFT COLUMN (Cols 1..6): Large Food Plate Photo (strictly contained within viewport boundaries) */}
             <div className="col-span-6 h-full flex flex-col items-center justify-center relative z-10 overflow-hidden">
@@ -121,23 +121,23 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
               </motion.div>
             </div>
 
-            {/* RIGHT COLUMN (Cols 7..12): Fixed Viewport Structure with Anchored Bottom Price Block */}
-            <div className="col-span-6 h-full flex flex-col justify-between text-left pr-[1vw] relative z-20 overflow-hidden">
+            {/* RIGHT COLUMN (Cols 7..12): Dynamic Height Description with Bottom-Anchored Price */}
+            <div className="col-span-6 h-full flex flex-col text-left pr-[1vw] relative z-20 overflow-hidden">
               
-              {/* 1. Composition & Ingredients Block (Rigidly bounded with flex-1 min-h-0 and line-clamp so text length never displaces price) */}
+              {/* 1. Composition & Ingredients Block (Adaptive dynamic height matching exact text size, clean spacing from title and allergens) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.16, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="flex-1 min-h-0 w-full flex items-center bg-white/92 backdrop-blur-xl rounded-[2.2rem] px-[2.6vw] py-[2vh] border-l-[10px] border-[#005826] shadow-[0_20px_50px_-10px_rgba(0,40,15,0.12)] ring-1 ring-[#005826]/12 overflow-hidden mb-[1.5vh]"
+                className="w-full h-auto max-h-[30vh] bg-white/92 backdrop-blur-xl rounded-[2.2rem] px-[2.6vw] py-[2vh] border-l-[10px] border-[#005826] shadow-[0_16px_36px_-10px_rgba(0,40,15,0.12)] ring-1 ring-[#005826]/12 overflow-hidden mb-[2.4vh] flex-shrink-0"
               >
-                <p className="text-[clamp(1.35rem,2.2vw,3rem)] text-[#1E2922] font-black leading-[1.32] line-clamp-4 overflow-hidden text-ellipsis">
+                <p className="text-[clamp(1.3rem,2.1vw,2.8rem)] text-[#1E2922] font-black leading-[1.32] line-clamp-4 overflow-hidden text-ellipsis">
                   {dish.description}
                 </p>
               </motion.div>
 
-              {/* 2. Allergens Line (Fixed Height Slot) */}
-              <div className="h-[6.5vh] min-h-[44px] flex-shrink-0 flex items-center mb-[1.5vh] overflow-hidden">
+              {/* 2. Allergens Line (Consistent clean distance below description, with mb-auto to anchor price at bottom) */}
+              <div className="h-[6.5vh] min-h-[44px] flex-shrink-0 flex items-center mb-auto overflow-hidden">
                 {dish.allergens ? (
                   <motion.div
                     initial={{ opacity: 0, y: 15 }}
@@ -161,7 +161,7 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                 initial={{ opacity: 0, y: 22, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: 0.32, type: 'spring', stiffness: 220, damping: 20 }}
-                className="h-[14vh] min-h-[95px] flex-shrink-0 flex items-center gap-[2.6vw] overflow-visible"
+                className="h-[14vh] min-h-[95px] flex-shrink-0 flex items-center gap-[2.6vw] overflow-visible pb-[0.5vh]"
               >
                 {/* Massive Golden Price Badge with soft, uniform volumetric shadow */}
                 <div className="relative flex-shrink-0">
