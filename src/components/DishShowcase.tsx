@@ -175,15 +175,10 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                   </div>
                 </div>
 
-                {/* Enlarged German Tax & Freshness Note */}
-                <div className="flex flex-col text-left justify-center space-y-[0.4vh] flex-shrink-0">
-                  <div className="flex items-center gap-[0.6vw] text-[#005826] font-black text-[clamp(1.25rem,1.9vw,2.5rem)] tracking-wide">
-                    <Sparkles className="w-[3vh] h-[3vh] min-w-[22px] min-h-[22px] text-[#F4C414] fill-[#F4C414] flex-shrink-0" />
-                    <span className="whitespace-nowrap">Inkl. MwSt.</span>
-                  </div>
-                  <span className="text-[clamp(1.05rem,1.5vw,2rem)] text-[#005826]/85 font-extrabold whitespace-nowrap">
-                    Frisch zubereitet
-                  </span>
+                {/* German Tax Note */}
+                <div className="flex items-center gap-[0.6vw] text-[#005826] font-black text-[clamp(1.3rem,2vw,2.6rem)] tracking-wide flex-shrink-0">
+                  <Sparkles className="w-[3vh] h-[3vh] min-w-[22px] min-h-[22px] text-[#F4C414] fill-[#F4C414] flex-shrink-0" />
+                  <span className="whitespace-nowrap">Inkl. MwSt.</span>
                 </div>
               </motion.div>
 

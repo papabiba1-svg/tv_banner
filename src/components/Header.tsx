@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Clock, Calendar, Maximize2, Minimize2, ShieldCheck } from 'lucide-react';
+import { Clock, Calendar, Maximize2, Minimize2, ShieldCheck, Sparkles } from 'lucide-react';
 import type { MenuBoardConfig } from '../data/menuData';
 import { resolveAssetUrl } from '../data/menuData';
 
@@ -112,11 +112,15 @@ export const Header: React.FC<HeaderProps> = ({
             <h1 className="text-[clamp(1.4rem,2.6vw,3.4rem)] font-black tracking-tight text-[#005826] leading-none uppercase font-display drop-shadow-sm">
               {config.restaurantName || 'MTA FOOD HOUSE'}
             </h1>
-            {config.slogan && (
-              <span className="text-[clamp(0.75rem,1vw,1.25rem)] font-bold text-[#005826]/70 tracking-wide mt-[0.4vh]">
-                {config.slogan}
-              </span>
-            )}
+            {/* Prominent, stylish "Frisch zubereitet" quality badge in the header */}
+            <div className="flex items-center gap-[0.5vw] mt-[0.5vh]">
+              <div className="inline-flex items-center gap-[0.4vw] bg-[#005826] text-[#F4C414] px-[1.1vw] py-[0.35vh] rounded-xl shadow-sm border border-[#F4C414]/40">
+                <Sparkles className="w-[1.8vh] h-[1.8vh] min-w-[13px] min-h-[13px] fill-[#F4C414] text-[#F4C414]" />
+                <span className="text-[clamp(0.95rem,1.35vw,1.8rem)] font-black tracking-widest uppercase font-display leading-tight">
+                  Frisch zubereitet
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
