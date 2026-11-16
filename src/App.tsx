@@ -20,6 +20,7 @@ import {
   getStoredMenuData,
   saveStoredMenuData,
 } from './services/menuStorage';
+import { initScreenWakeLock } from './services/wakeLock';
 
 export const App: React.FC = () => {
   // Menu data state: initialize directly from localStorage to ensure user-added dishes and images persist across refreshes
@@ -77,6 +78,14 @@ export const App: React.FC = () => {
     return () => {
       window.removeEventListener('hashchange', checkAdminRoute);
       window.removeEventListener('popstate', checkAdminRoute);
+    };
+  }, []);
+
+  // Screen Wake Lock & Keep-Alive to prevent Fire TV / Android TV from entering sleep mode
+  useEffect(() => {
+    const cleanupWakeLock = initScreenWakeLock();
+    return () => {
+      cleanupWakeLock();
     };
   }, []);
 
