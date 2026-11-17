@@ -37,7 +37,14 @@ export interface MenuBoardConfig {
   cateringEnabled?: boolean; // show catering promo slide in carousel
   cateringDuration?: number; // seconds, default 15
   showEveryNDishes?: number; // promo after every N dishes, default 3
+  cateringTitle?: string; // German headline on catering slide
+  cateringSubtitle?: string; // German description on catering slide
+  cateringPhone?: string; // optional phone, hidden when empty
 }
+
+export const DEFAULT_CATERING_TITLE = 'Exklusive Grillplatten & Fingerfood';
+export const DEFAULT_CATERING_SUBTITLE =
+  'Für Ihre Feiern, Firmen-Events und Familienfeste in Dorsten und Umgebung.';
 
 export interface MenuDataPayload {
   config: MenuBoardConfig;

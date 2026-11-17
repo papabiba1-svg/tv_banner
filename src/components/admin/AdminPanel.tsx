@@ -18,6 +18,7 @@ import {
   Lock,
 } from 'lucide-react';
 import type { Dish, Category, MenuBoardConfig, MenuDataPayload } from '../../data/menuData';
+import { DEFAULT_CATERING_TITLE, DEFAULT_CATERING_SUBTITLE } from '../../data/menuData';
 import { formatEuroPrice, resolveAssetUrl } from '../../data/menuData';
 import type { GitHubSettings } from '../../services/githubApi';
 import {
@@ -62,7 +63,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   >([]);
 
   // Navigation & UI state
-  const [activeTab, setActiveTab] = useState<'dishes' | 'categories' | 'settings'>('dishes');
+  const [activeTab, setActiveTab] = useState<'dishes' | 'categories' | 'catering' | 'settings'>('dishes');
+
+  // Update a single config field and persist immediately (localStorage + App state)
+  const updateConfigField = <K extends keyof MenuBoardConfig>(key: K, value: MenuBoardConfig[K]) => {
+    const nextConfig = { ...config, [key]: value };
+    setConfig(nextConfig);
+    setHasUnsavedChanges(true);
+    syncAndPersist(items, categories, nextConfig);
+  };
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -422,6 +431,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </button>
 
           <button
+            onClick={() => setActiveTab('catering')}
+            className={`py-2.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 transition-colors ${
+              activeTab === 'catering'
+                ? 'border-[#005826] text-[#005826]'
+                : 'border-transparent text-[#005826]/60 hover:text-[#005826]'
+            }`}
+          >
+            <span>🍢</span>
+            <span>Кейтеринг</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('settings')}
             className={`py-2.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 transition-colors ${
               activeTab === 'settings'
@@ -739,6 +760,98 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </div>
         )}
 
+        {/* TAB: CATERING PROMO SLIDE */}
+        {activeTab === 'catering' && (
+          <div className="max-w-xl mx-auto space-y-4">
+            <div className="bg-white p-6 rounded-2xl border border-[#005826]/15 shadow-sm space-y-4">
+              <h3 className="text-lg font-black text-[#005826] uppercase font-display">
+                Рекламный слайд «Catering &amp; Partyservice»
+              </h3>
+              <p className="text-xs text-[#005826]/70 font-semibold">
+                Изменения сохраняются автоматически в памяти приставки (localStorage) и не сбрасываются после перезагрузки.
+                Чтобы сохранить их в файл на GitHub, нажмите «Опубликовать».
+              </p>
+
+              <label className="flex items-center gap-3 p-3 bg-amber-50 border border-amber-300 rounded-xl text-sm font-bold text-[#005826] cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="w-5 h-5 accent-[#005826]"
+                  checked={config.cateringEnabled !== false}
+                  onChange={(e) => updateConfigField('cateringEnabled', e.target.checked)}
+                />
+                Включить показ слайда кейтеринга
+              </label>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-[#005826] uppercase mb-1">
+                    Время показа (сек)
+                  </label>
+                  <input
+                    type="number"
+                    min={3}
+                    max={120}
+                    value={config.cateringDuration ?? 15}
+                    onChange={(e) => updateConfigField('cateringDuration', Math.max(3, Number(e.target.value) || 15))}
+                    className="w-full px-3 py-2 bg-gray-50 border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#005826] uppercase mb-1">
+                    Показывать после N блюд
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={50}
+                    value={config.showEveryNDishes ?? 3}
+                    onChange={(e) => updateConfigField('showEveryNDishes', Math.max(1, Number(e.target.value) || 3))}
+                    className="w-full px-3 py-2 bg-gray-50 border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-gray-100">
+                <label className="block text-xs font-bold text-[#005826] uppercase mb-1">
+                  Заголовок (немецкий)
+                </label>
+                <input
+                  type="text"
+                  value={config.cateringTitle ?? DEFAULT_CATERING_TITLE}
+                  onChange={(e) => updateConfigField('cateringTitle', e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-50 border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
+                />
+                <p className="text-[11px] text-[#005826]/60 mt-1">Часть после «&amp;» выделяется оранжевым цветом.</p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#005826] uppercase mb-1">
+                  Подзаголовок / описание (немецкий)
+                </label>
+                <textarea
+                  rows={3}
+                  value={config.cateringSubtitle ?? DEFAULT_CATERING_SUBTITLE}
+                  onChange={(e) => updateConfigField('cateringSubtitle', e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-50 border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-[#005826] uppercase mb-1">
+                  Телефон (необязательно)
+                </label>
+                <input
+                  type="text"
+                  value={config.cateringPhone ?? ''}
+                  onChange={(e) => updateConfigField('cateringPhone', e.target.value)}
+                  placeholder="Пусто — телефон не показывается"
+                  className="w-full px-3 py-2 bg-gray-50 border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* TAB 3: SETTINGS (GitHub & PIN) */}
         {activeTab === 'settings' && (
           <div className="max-w-xl mx-auto space-y-4">
@@ -834,59 +947,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     }}
                     className="w-full px-3 py-2 bg-gray-50 border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
                   />
-                </div>
-
-                {/* Кейтеринг-слайд в карусели */}
-                <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl space-y-2">
-                  <label className="flex items-center gap-2 text-xs font-bold text-[#005826] uppercase">
-                    <input
-                      type="checkbox"
-                      checked={config.cateringEnabled !== false}
-                      onChange={(e) => {
-                        const nextConfig = { ...config, cateringEnabled: e.target.checked };
-                        setConfig(nextConfig);
-                        setHasUnsavedChanges(true);
-                        syncAndPersist(items, categories, nextConfig);
-                      }}
-                    />
-                    Показывать рекламный слайд кейтеринга
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div>
-                      <label className="block text-xs font-bold text-[#005826] mb-1">
-                        Длительность (сек)
-                      </label>
-                      <input
-                        type="number"
-                        min={3}
-                        value={config.cateringDuration ?? 15}
-                        onChange={(e) => {
-                          const nextConfig = { ...config, cateringDuration: Number(e.target.value) || 15 };
-                          setConfig(nextConfig);
-                          setHasUnsavedChanges(true);
-                          syncAndPersist(items, categories, nextConfig);
-                        }}
-                        className="w-full px-3 py-2 bg-white border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-[#005826] mb-1">
-                        Показ после каждых N блюд
-                      </label>
-                      <input
-                        type="number"
-                        min={1}
-                        value={config.showEveryNDishes ?? 3}
-                        onChange={(e) => {
-                          const nextConfig = { ...config, showEveryNDishes: Math.max(1, Number(e.target.value) || 3) };
-                          setConfig(nextConfig);
-                          setHasUnsavedChanges(true);
-                          syncAndPersist(items, categories, nextConfig);
-                        }}
-                        className="w-full px-3 py-2 bg-white border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
-                      />
-                    </div>
-                  </div>
                 </div>
 
                 {settingsMsg && (
