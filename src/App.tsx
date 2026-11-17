@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { CateringPromoSlide } from './components/CateringPromoSlide';
 import { Header } from './components/Header';
 import { DishShowcase } from './components/DishShowcase';
 import { KioskControls } from './components/KioskControls';
@@ -45,6 +46,9 @@ export const App: React.FC = () => {
     DEFAULT_CONFIG.slideDurationSeconds || 9
   );
   const [progressPercent, setProgressPercent] = useState<number>(0);
+  const [showCatering, setShowCatering] = useState<boolean>(false);
+  const showCateringRef = useRef<boolean>(false);
+  const dishesSinceCateringRef = useRef<number>(1);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [showKioskToast, setShowKioskToast] = useState<boolean>(true);
 
@@ -157,20 +161,52 @@ export const App: React.FC = () => {
   const currentDish: Dish | undefined =
     displayDishes[currentDishIndex] || displayDishes[0] || allItems[0];
 
-  // Advance to next dish
+  // Catering promo carousel logic
+  const cateringEnabled = config.cateringEnabled !== false;
+  const cateringDuration = Math.max(3, config.cateringDuration || 15);
+  const everyN = Math.max(1, Math.floor(config.showEveryNDishes || 3));
+
+  // Advance to next dish (or insert catering promo slide every N dishes)
   const handleNextDish = useCallback(() => {
     setDirection(1);
     setProgressPercent(0);
-    setCurrentDishIndex((prevIndex) => {
-      if (displayDishes.length <= 1) return 0;
-      return (prevIndex + 1) % displayDishes.length;
-    });
-  }, [displayDishes.length]);
+
+    const advance = () =>
+      setCurrentDishIndex((prevIndex) => {
+        if (displayDishes.length <= 1) return 0;
+        return (prevIndex + 1) % displayDishes.length;
+      });
+
+    if (showCateringRef.current) {
+      // Catering finished -> continue with next dish in order
+      showCateringRef.current = false;
+      dishesSinceCateringRef.current = 1;
+      setShowCatering(false);
+      advance();
+      return;
+    }
+
+    if (cateringEnabled && dishesSinceCateringRef.current >= everyN) {
+      showCateringRef.current = true;
+      dishesSinceCateringRef.current = 0;
+      setShowCatering(true);
+      return;
+    }
+
+    dishesSinceCateringRef.current += 1;
+    advance();
+  }, [displayDishes.length, cateringEnabled, everyN]);
 
   // Back to previous dish
   const handlePrevDish = useCallback(() => {
     setDirection(-1);
     setProgressPercent(0);
+    if (showCateringRef.current) {
+      showCateringRef.current = false;
+      dishesSinceCateringRef.current = 1;
+      setShowCatering(false);
+      return;
+    }
     setCurrentDishIndex((prevIndex) => {
       if (displayDishes.length <= 1) return 0;
       return (prevIndex - 1 + displayDishes.length) % displayDishes.length;
@@ -272,7 +308,8 @@ export const App: React.FC = () => {
     if (isPaused || isAdminOpen) return;
 
     const intervalMs = 100;
-    const totalTicks = (slideDuration * 1000) / intervalMs;
+    const activeDuration = showCatering ? cateringDuration : slideDuration;
+    const totalTicks = (activeDuration * 1000) / intervalMs;
 
     const timer = setInterval(() => {
       setProgressPercent((prev) => {
@@ -286,7 +323,7 @@ export const App: React.FC = () => {
     }, intervalMs);
 
     return () => clearInterval(timer);
-  }, [isPaused, isAdminOpen, slideDuration, handleNextDish]);
+  }, [isPaused, isAdminOpen, slideDuration, cateringDuration, showCatering, handleNextDish]);
 
   return (
     <div className="fixed inset-0 w-screen h-screen overflow-hidden signage-bg flex flex-col justify-between select-none font-sans text-[#FDFBF7]">
@@ -301,7 +338,9 @@ export const App: React.FC = () => {
 
       {/* 2. Main Center Body: Full-Screen 100vw Hero Showcase */}
       <main className="relative flex-1 min-h-0 w-full h-full flex items-center justify-center overflow-hidden">
-        {currentDish ? (
+        {showCatering ? (
+          <CateringPromoSlide />
+        ) : currentDish ? (
           <DishShowcase dish={currentDish} direction={direction} />
         ) : (
           <div className="w-full flex items-center justify-center text-[#F4C414] font-bold text-3xl">

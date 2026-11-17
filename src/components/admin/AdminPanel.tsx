@@ -836,6 +836,59 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   />
                 </div>
 
+                {/* Кейтеринг-слайд в карусели */}
+                <div className="p-3 bg-amber-50 border border-amber-300 rounded-xl space-y-2">
+                  <label className="flex items-center gap-2 text-xs font-bold text-[#005826] uppercase">
+                    <input
+                      type="checkbox"
+                      checked={config.cateringEnabled !== false}
+                      onChange={(e) => {
+                        const nextConfig = { ...config, cateringEnabled: e.target.checked };
+                        setConfig(nextConfig);
+                        setHasUnsavedChanges(true);
+                        syncAndPersist(items, categories, nextConfig);
+                      }}
+                    />
+                    Показывать рекламный слайд кейтеринга
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-xs font-bold text-[#005826] mb-1">
+                        Длительность (сек)
+                      </label>
+                      <input
+                        type="number"
+                        min={3}
+                        value={config.cateringDuration ?? 15}
+                        onChange={(e) => {
+                          const nextConfig = { ...config, cateringDuration: Number(e.target.value) || 15 };
+                          setConfig(nextConfig);
+                          setHasUnsavedChanges(true);
+                          syncAndPersist(items, categories, nextConfig);
+                        }}
+                        className="w-full px-3 py-2 bg-white border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-[#005826] mb-1">
+                        Показ после каждых N блюд
+                      </label>
+                      <input
+                        type="number"
+                        min={1}
+                        value={config.showEveryNDishes ?? 3}
+                        onChange={(e) => {
+                          const nextConfig = { ...config, showEveryNDishes: Math.max(1, Number(e.target.value) || 3) };
+                          setConfig(nextConfig);
+                          setHasUnsavedChanges(true);
+                          syncAndPersist(items, categories, nextConfig);
+                        }}
+                        className="w-full px-3 py-2 bg-white border border-[#005826]/30 rounded-xl text-sm font-semibold text-[#005826]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 {settingsMsg && (
                   <div className="p-3 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-xl text-xs font-bold">
                     {settingsMsg}

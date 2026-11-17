@@ -34,6 +34,9 @@ export interface MenuBoardConfig {
   autoPlay: boolean;
   currency: string;
   phoneOrWifi?: string;
+  cateringEnabled?: boolean; // show catering promo slide in carousel
+  cateringDuration?: number; // seconds, default 15
+  showEveryNDishes?: number; // promo after every N dishes, default 3
 }
 
 export interface MenuDataPayload {
@@ -69,6 +72,9 @@ export const MENU_CONFIG: MenuBoardConfig = {
   autoPlay: true,
   currency: "€",
   phoneOrWifi: "Free Wi-Fi: MTA-Guest",
+  cateringEnabled: true,
+  cateringDuration: 15,
+  showEveryNDishes: 3,
 };
 
 export const CATEGORIES: Category[] = [

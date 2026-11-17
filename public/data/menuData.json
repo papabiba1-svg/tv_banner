@@ -6,7 +6,10 @@
     "slideDurationSeconds": 9,
     "autoPlay": true,
     "currency": "€",
-    "phoneOrWifi": "Free Wi-Fi: MTA-Guest"
+    "phoneOrWifi": "Free Wi-Fi: MTA-Guest",
+    "cateringEnabled": true,
+    "cateringDuration": 15,
+    "showEveryNDishes": 3
   },
   "categories": [
     {
