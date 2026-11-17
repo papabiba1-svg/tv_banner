@@ -92,12 +92,12 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
           >
             <h2
               style={{ whiteSpace: 'nowrap' }}
-              className="w-full text-center whitespace-nowrap overflow-hidden text-ellipsis text-[clamp(2.2rem,4.4vw,5.4rem)] font-black text-[#FDFBF7] font-display tracking-tight leading-[1.08] drop-shadow-[0_4px_18px_rgba(0,0,0,0.65)] px-[1vw]"
+              className="w-full text-center whitespace-nowrap overflow-hidden text-ellipsis text-[clamp(2.6rem,5.2vw,6.4rem)] font-black text-[#FDFBF7] font-display tracking-tight leading-[1.08] drop-shadow-[0_4px_18px_rgba(0,0,0,0.65)] px-[1vw]"
             >
               {dish.name}
             </h2>
             {/* Signature Golden Accent Line */}
-            <div className="w-[22vw] h-[0.55vh] min-h-[4px] bg-gradient-to-r from-transparent via-[#F4C414] to-transparent rounded-full mt-[1vh] shadow-[0_2px_12px_rgba(244,196,20,0.45)]" />
+            <div className="w-[26vw] h-[0.65vh] min-h-[4px] bg-gradient-to-r from-transparent via-[#F4C414] to-transparent rounded-full mt-[1vh] shadow-[0_2px_12px_rgba(244,196,20,0.45)]" />
           </motion.div>
 
           {/* MAIN CONTENT ROW: Two-Column Split strictly isolated within 100vh */}
@@ -188,9 +188,9 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.14, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full pl-[1.8vw] border-l-[4px] border-[#F4C414]/80 mb-[2.2vh]"
+                  className="w-full pl-[2vw] border-l-[5px] border-[#F4C414] mb-[2.5vh]"
                 >
-                  <p className="text-[clamp(1.4rem,2.25vw,3rem)] text-[#F4F1EA] font-bold leading-[1.38] tracking-wide line-clamp-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]">
+                  <p className="text-[clamp(1.6rem,2.6vw,3.5rem)] text-[#F4F1EA] font-extrabold leading-[1.36] tracking-wide line-clamp-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]">
                     {dish.description}
                   </p>
                 </motion.div>
@@ -202,38 +202,38 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                   transition={{ delay: 0.22, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                   className="w-full flex items-center"
                 >
-                  <div className="w-fit max-w-full flex items-start gap-[0.75vw] bg-white/[0.06] border border-white/[0.14] backdrop-blur-md px-[1.4vw] py-[0.8vh] rounded-xl text-[clamp(0.95rem,1.38vw,1.8rem)] font-semibold tracking-wide shadow-[0_4px_16px_rgba(0,0,0,0.25)]">
-                    <Info className="w-[2.5vh] h-[2.5vh] min-w-[18px] min-h-[18px] text-[#F4C414] flex-shrink-0 mt-[0.2vh]" />
+                  <div className="w-fit max-w-full flex items-start gap-[0.8vw] bg-white/[0.06] border border-white/[0.14] backdrop-blur-md px-[1.6vw] py-[1vh] rounded-xl text-[clamp(1.1rem,1.65vw,2.2rem)] font-bold tracking-wide shadow-[0_4px_16px_rgba(0,0,0,0.25)]">
+                    <Info className="w-[2.8vh] h-[2.8vh] min-w-[20px] min-h-[20px] text-[#F4C414] flex-shrink-0 mt-[0.2vh]" />
                     {renderAllergens(dish.allergens)}
                   </div>
                 </motion.div>
               </div>
 
-              {/* 3. Professional Frameless Digital Signage Price Display (Anchored on Right Field of Right Column) */}
+              {/* 3. Professional Frameless Digital Signage Price Display (Lifted higher & shifted right for breathing room) */}
               <motion.div
                 initial={{ opacity: 0, y: 20, scale: 0.96 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: 0.3, type: 'spring', stiffness: 220, damping: 22 }}
-                className="flex-shrink-0 flex flex-col items-end justify-end self-end text-right pr-[1.5vw] pb-[0.5vh] relative"
+                className="flex-shrink-0 flex flex-col items-end justify-end self-end text-right pr-[1.2vw] pb-[2vh] mb-[1.5vh] relative"
               >
                 {/* Subtle ambient studio glow behind the freestanding price numbers */}
-                <div className="absolute -inset-x-[2vw] -inset-y-[1vh] bg-radial from-[#F4C414]/15 via-transparent to-transparent blur-2xl pointer-events-none -z-10" />
+                <div className="absolute -inset-x-[2.5vw] -inset-y-[1.5vh] bg-radial from-[#F4C414]/18 via-transparent to-transparent blur-2xl pointer-events-none -z-10" />
 
                 {/* Giant Freestanding Cinematic Price Typography (No button borders or pill boxes) */}
                 <div
                   style={{
                     filter:
-                      'drop-shadow(0 12px 28px rgba(0, 0, 0, 0.8)) drop-shadow(0 2px 8px rgba(244, 196, 20, 0.22))',
+                      'drop-shadow(0 14px 32px rgba(0, 0, 0, 0.85)) drop-shadow(0 2px 10px rgba(244, 196, 20, 0.28))',
                   }}
-                  className="text-[clamp(4rem,7.8vw,10.2rem)] font-black font-display tracking-tight leading-[0.95] bg-gradient-to-b from-[#FFF8D6] via-[#FFD93D] to-[#F4C414] bg-clip-text text-transparent select-none whitespace-nowrap"
+                  className="text-[clamp(4.8rem,9.2vw,12rem)] font-black font-display tracking-tight leading-[0.92] bg-gradient-to-b from-[#FFFDF0] via-[#FFDF00] to-[#E5A800] bg-clip-text text-transparent select-none whitespace-nowrap"
                 >
                   {dish.priceFormatted}
                 </div>
 
                 {/* Harmoniously bound "Inkl. MwSt." sub-label directly beneath the price */}
-                <div className="flex items-center justify-end gap-[0.6vw] mt-[0.8vh] pr-[0.2vw]">
-                  <span className="w-[3.5vw] h-[2px] bg-gradient-to-r from-transparent to-[#F4C414]/70 rounded-full" />
-                  <span className="text-[clamp(0.95rem,1.35vw,1.75rem)] font-bold uppercase tracking-[0.2em] text-[#E2ECE5]/85 whitespace-nowrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
+                <div className="flex items-center justify-end gap-[0.6vw] mt-[0.8vh] pr-[0.3vw]">
+                  <span className="w-[4vw] h-[2px] bg-gradient-to-r from-transparent to-[#F4C414]/75 rounded-full" />
+                  <span className="text-[clamp(1.05rem,1.5vw,2rem)] font-bold uppercase tracking-[0.22em] text-[#E2ECE5]/85 whitespace-nowrap drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]">
                     Inkl. MwSt.
                   </span>
                 </div>

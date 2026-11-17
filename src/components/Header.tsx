@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="bg-[#07120B]/80 backdrop-blur-xl border-b border-white/[0.08] px-[3.5vw] py-[1.2vh] flex items-center justify-between shadow-[0_10px_30px_rgba(0,0,0,0.45)] relative">
         
         {/* Left: Brand Logo + Restaurant Name + "+ FRISCH ZUBEREITET" Badge */}
-        <div className="flex items-center gap-[1.4vw]">
+        <div className="flex items-center gap-[1.5vw]">
           <div className="relative group">
             <button
               onClick={handleLogoClick}
@@ -87,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <img
                   src={resolveAssetUrl(config.logoUrl || './logo.png')}
                   alt="MTA Food House"
-                  className="w-[6.8vh] h-[6.8vh] min-w-[46px] min-h-[46px] rounded-full object-contain shadow-[0_4px_20px_rgba(0,0,0,0.6)] ring-2 ring-[#F4C414]/60 group-hover:ring-[#F4C414] transition-all bg-[#F9F6E8]"
+                  className="w-[8vh] h-[8vh] min-w-[54px] min-h-[54px] rounded-full object-contain shadow-[0_4px_20px_rgba(0,0,0,0.6)] ring-2 ring-[#F4C414]/60 group-hover:ring-[#F4C414] transition-all bg-[#F9F6E8]"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = resolveAssetUrl('./logo.png');
                   }}
@@ -109,14 +109,14 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           <div className="flex flex-col justify-center">
-            <h1 className="text-[clamp(1.35rem,2.4vw,3.1rem)] font-black tracking-wider text-[#FDFBF7] leading-none uppercase font-display drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+            <h1 className="text-[clamp(1.6rem,2.8vw,3.6rem)] font-black tracking-wider text-[#FDFBF7] leading-none uppercase font-display drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               {config.restaurantName || 'MTA FOOD HOUSE'}
             </h1>
             {/* Stylish "+ FRISCH ZUBEREITET" badge directly under restaurant name */}
             <div className="flex items-center mt-[0.5vh]">
-              <div className="inline-flex items-center gap-[0.4vw] bg-gradient-to-r from-[#005826] to-[#00421C] text-[#F4C414] px-[1vw] py-[0.28vh] rounded-lg shadow-[0_2px_12px_rgba(0,0,0,0.35)] border border-[#F4C414]/45">
-                <Sparkles className="w-[1.6vh] h-[1.6vh] min-w-[12px] min-h-[12px] fill-[#F4C414] text-[#F4C414]" />
-                <span className="text-[clamp(0.85rem,1.2vw,1.55rem)] font-black tracking-[0.14em] uppercase font-display leading-tight">
+              <div className="inline-flex items-center gap-[0.5vw] bg-gradient-to-r from-[#005826] to-[#00421C] text-[#F4C414] px-[1.2vw] py-[0.4vh] rounded-lg shadow-[0_2px_12px_rgba(0,0,0,0.35)] border border-[#F4C414]/45">
+                <Sparkles className="w-[2vh] h-[2vh] min-w-[14px] min-h-[14px] fill-[#F4C414] text-[#F4C414]" />
+                <span className="text-[clamp(0.95rem,1.35vw,1.75rem)] font-black tracking-[0.14em] uppercase font-display leading-tight">
                   + FRISCH ZUBEREITET
                 </span>
               </div>
@@ -125,18 +125,18 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Right: Elegant Date & Digital Clock Display */}
-        <div className="flex items-center gap-[1.1vw] bg-white/[0.06] backdrop-blur-md px-[1.5vw] py-[0.8vh] rounded-2xl border border-white/[0.12] shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
+        <div className="flex items-center gap-[1.3vw] bg-white/[0.06] backdrop-blur-md px-[1.8vw] py-[1vh] rounded-2xl border border-white/[0.12] shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
           {dateStr && (
-            <div className="flex items-center gap-[0.5vw] border-r border-white/[0.15] pr-[1.1vw]">
-              <Calendar className="w-[2.1vh] h-[2.1vh] min-w-[16px] min-h-[16px] text-[#F4C414]" />
-              <span className="font-mono text-[clamp(0.95rem,1.35vw,1.8rem)] font-bold text-[#E2ECE5] tracking-wider leading-none">
+            <div className="flex items-center gap-[0.6vw] border-r border-white/[0.15] pr-[1.3vw]">
+              <Calendar className="w-[2.4vh] h-[2.4vh] min-w-[18px] min-h-[18px] text-[#F4C414]" />
+              <span className="font-mono text-[clamp(1.1rem,1.55vw,2.1rem)] font-bold text-[#E2ECE5] tracking-wider leading-none">
                 {dateStr}
               </span>
             </div>
           )}
-          <div className="flex items-center gap-[0.5vw]">
-            <Clock className="w-[2.3vh] h-[2.3vh] min-w-[18px] min-h-[18px] text-[#F4C414]" />
-            <span className="font-mono text-[clamp(1.1rem,1.8vw,2.35rem)] font-black text-[#FDFBF7] tracking-widest leading-none">
+          <div className="flex items-center gap-[0.6vw]">
+            <Clock className="w-[2.6vh] h-[2.6vh] min-w-[20px] min-h-[20px] text-[#F4C414]" />
+            <span className="font-mono text-[clamp(1.25rem,2.1vw,2.8rem)] font-black text-[#FDFBF7] tracking-widest leading-none">
               {time || '--:--:--'}
             </span>
           </div>
