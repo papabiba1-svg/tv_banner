@@ -44,7 +44,7 @@ export interface MenuBoardConfig {
 
 export const DEFAULT_CATERING_TITLE = 'Exklusive Grillplatten & Fingerfood';
 export const DEFAULT_CATERING_SUBTITLE =
-  'Für Ihre Feiern, Firmen-Events und Familienfeste in Dorsten und Umgebung.';
+  'Mit Lieferung für Ihre Feiern, Firmen-Events und Familienfeste in Dorsten und Umgebung.';
 
 export interface MenuDataPayload {
   config: MenuBoardConfig;
@@ -82,6 +82,9 @@ export const MENU_CONFIG: MenuBoardConfig = {
   cateringEnabled: true,
   cateringDuration: 15,
   showEveryNDishes: 3,
+  cateringTitle: DEFAULT_CATERING_TITLE,
+  cateringSubtitle: DEFAULT_CATERING_SUBTITLE,
+  cateringPhone: "",
 };
 
 export const CATEGORIES: Category[] = [

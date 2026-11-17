@@ -10,27 +10,34 @@ import type { MenuBoardConfig } from '../data/menuData';
 const HERO_IMAGE = '/images/catering/generated-2026-10/grillplatte-oriental.png';
 const HERO_LABEL = 'Grillplatte Oriental';
 
-const BENEFITS = ['🔥 Holzkohlegrill', '✨ Frisch zubereitet', '📋 Individuell'];
+const BENEFITS = ['🔥 Holzkohlegrill', '✨ Frisch zubereitet'];
 
 interface CateringPromoSlideProps {
   config: MenuBoardConfig;
 }
 
-/** Splits the title at "&" so the second part can be highlighted in amber. */
+/** Splits the title at "&" or "und" so the connector neatly starts the second line in amber. */
 const renderTitle = (title: string) => {
-  const idx = title.indexOf('&');
-  if (idx <= 0) return title;
-  return (
-    <>
-      {title.slice(0, idx).trim()}{' '}
-      <span className="text-[#f59e0b]">{title.slice(idx).trim()}</span>
-    </>
-  );
+  const match = title.match(/\s+(&|und)\s+/i);
+  if (match && match.index !== undefined) {
+    const firstPart = title.slice(0, match.index).trim();
+    const secondPart = title.slice(match.index).trim();
+    return (
+      <>
+        <span className="block">{firstPart}</span>
+        <span className="block text-[#f59e0b] whitespace-nowrap">{secondPart}</span>
+      </>
+    );
+  }
+  return title;
 };
 
 export const CateringPromoSlide: React.FC<CateringPromoSlideProps> = ({ config }) => {
   const title = config.cateringTitle?.trim() || DEFAULT_CATERING_TITLE;
-  const subtitle = config.cateringSubtitle?.trim() || DEFAULT_CATERING_SUBTITLE;
+  let subtitle = config.cateringSubtitle?.trim() || DEFAULT_CATERING_SUBTITLE;
+  if (!subtitle || subtitle === 'Für Ihre Feiern, Firmen-Events und Familienfeste in Dorsten und Umgebung.') {
+    subtitle = DEFAULT_CATERING_SUBTITLE;
+  }
   const phone = config.cateringPhone?.trim() || '';
 
   return (
@@ -48,23 +55,25 @@ export const CateringPromoSlide: React.FC<CateringPromoSlideProps> = ({ config }
         transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="w-[50%] flex-shrink-0 h-full min-h-0 flex flex-col justify-center gap-[2.4vh] overflow-hidden"
       >
-        <div className="self-start px-[1.6vw] py-[1vh] rounded-full bg-[#f59e0b] text-[#1a1203] font-black tracking-[0.1em] uppercase text-[3.8vh] leading-none shadow-[0_6px_24px_rgba(245,158,11,0.35)] whitespace-nowrap">
+        {/* Enlarged prominent top badge */}
+        <div className="self-start px-[2.2vw] py-[1.2vh] rounded-full bg-[#f59e0b] text-[#1a1203] font-black tracking-[0.12em] uppercase text-[4.4vh] leading-none shadow-[0_8px_28px_rgba(245,158,11,0.45)] whitespace-nowrap">
           Catering &amp; Partyservice
         </div>
 
-        <h2 className="text-[7vh] font-black font-display leading-[1.05] text-[#FDFBF7] drop-shadow-[0_4px_18px_rgba(0,0,0,0.65)]">
+        <h2 className="text-[6.4vh] font-black font-display leading-[1.08] text-[#FDFBF7] drop-shadow-[0_4px_18px_rgba(0,0,0,0.65)]">
           {renderTitle(title)}
         </h2>
 
-        <p className="text-[4.2vh] font-bold leading-[1.28] text-[#F4F1EA] drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] pl-[1.4vw] border-l-[6px] border-[#f59e0b]">
+        <p className="text-[3.8vh] font-bold leading-[1.3] text-[#F4F1EA] drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] pl-[1.4vw] border-l-[6px] border-[#f59e0b]">
           {subtitle}
         </p>
 
-        <div className="flex flex-wrap gap-[1.4vh]">
+        {/* 2 prominent benefit badges nicely distributed */}
+        <div className="flex flex-wrap items-center gap-[1.2vw]">
           {BENEFITS.map((b) => (
             <div
               key={b}
-              className="px-[1.3vw] py-[1.2vh] rounded-2xl bg-white/[0.1] border-2 border-[#f59e0b]/40 text-[3.6vh] leading-none font-extrabold text-[#FDFBF7] whitespace-nowrap shadow-[0_6px_18px_rgba(0,0,0,0.35)]"
+              className="px-[1.6vw] py-[1.3vh] rounded-2xl bg-white/[0.12] border-2 border-[#f59e0b]/50 text-[3.8vh] leading-none font-black text-[#FDFBF7] whitespace-nowrap shadow-[0_6px_20px_rgba(0,0,0,0.35)]"
             >
               {b}
             </div>
@@ -72,10 +81,10 @@ export const CateringPromoSlide: React.FC<CateringPromoSlideProps> = ({ config }
         </div>
 
         <div className="rounded-2xl bg-gradient-to-r from-[#005826] to-[#00421C] border-2 border-[#f59e0b]/70 px-[1.6vw] py-[1.8vh] shadow-[0_8px_28px_rgba(0,0,0,0.45)]">
-          <div className="text-[3vh] leading-none font-black tracking-[0.1em] uppercase text-[#f59e0b] whitespace-nowrap">
+          <div className="text-[2.8vh] leading-none font-black tracking-[0.1em] uppercase text-[#f59e0b] whitespace-nowrap">
             Jetzt vorbestellen{phone ? `: ${phone}` : ''}
           </div>
-          <div className="text-[4.2vh] leading-[1.15] font-black font-display text-[#FDFBF7] mt-[1vh]">
+          <div className="text-[4vh] leading-[1.15] font-black font-display text-[#FDFBF7] mt-[0.8vh]">
             Sprechen Sie unser Personal an!
           </div>
         </div>
