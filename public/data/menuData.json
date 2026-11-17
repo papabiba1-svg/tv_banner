@@ -91,7 +91,26 @@
       "tags": [
         "Hausgemacht"
       ]
+    },
+    {
+      "id": "double-burger-1975",
+      "orderNumber": "4.",
+      "name": "Double Burger",
+      "description": "Zwei Rindfleisch-Patties, doppelter Cheddar und Burgersauce.",
+      "price": 9,
+      "priceFormatted": "9,00 €",
+      "categoryId": "wareniki-pelmeni",
+      "image": "./dishes/dish-double-burger-1975.png",
+      "badgeType": "yellow",
+      "allergens": "Allergene: A (Weizen), C (Eier), G (Milch / Laktose), M (Senf)",
+      "isVegetarian": false,
+      "isSpicy": false,
+      "isBestseller": true,
+      "isAvailable": true,
+      "tags": [
+        "Hausgemacht"
+      ]
     }
   ],
-  "updatedAt": "2026-11-15T21:19:28.118Z"
+  "updatedAt": "2026-11-17T13:22:57.332Z"
 }
