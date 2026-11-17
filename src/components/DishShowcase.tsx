@@ -9,6 +9,58 @@ interface DishShowcaseProps {
   direction: number; // 1 for next, -1 for prev
 }
 
+/**
+ * Renders allergens with safe whole-unit wrapping so that individual allergen items
+ * (e.g. "M (Senf)" or "G (Milch / Laktose)") never break across lines mid-word or mid-parenthesis.
+ */
+const renderAllergens = (allergensText?: string) => {
+  if (!allergensText || !allergensText.trim()) {
+    return (
+      <span className="text-[#D6E4DB]">
+        Keine deklarationspflichtigen Allergene
+      </span>
+    );
+  }
+
+  let prefix = '';
+  let content = allergensText.trim();
+  if (content.toLowerCase().startsWith('allergene:')) {
+    prefix = 'Allergene:';
+    content = content.slice(10).trim();
+  }
+
+  const items = content
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (items.length === 0) {
+    return <span className="text-[#D6E4DB]">{allergensText}</span>;
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-x-[0.5vw] gap-y-[0.5vh] leading-[1.35] max-w-full">
+      {prefix && (
+        <span className="font-bold text-[#F4C414] whitespace-nowrap mr-[0.2vw]">
+          {prefix}
+        </span>
+      )}
+      {items.map((item, idx) => {
+        const isLast = idx === items.length - 1;
+        return (
+          <span
+            key={idx}
+            className="whitespace-nowrap inline-flex items-center text-[#D6E4DB]"
+          >
+            {item}
+            {!isLast && <span className="text-white/45 ml-[0.1vw] mr-[0.35vw]">,</span>}
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
 export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) => {
   return (
     <div className="relative w-full h-full flex flex-col justify-between px-[4vw] py-[1.4vh] overflow-hidden">
@@ -136,25 +188,23 @@ export const DishShowcase: React.FC<DishShowcaseProps> = ({ dish, direction }) =
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.14, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full pl-[1.8vw] border-l-[4px] border-[#F4C414]/80 mb-[3vh]"
+                  className="w-full pl-[1.8vw] border-l-[4px] border-[#F4C414]/80 mb-[2.2vh]"
                 >
                   <p className="text-[clamp(1.4rem,2.25vw,3rem)] text-[#F4F1EA] font-bold leading-[1.38] tracking-wide line-clamp-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]">
                     {dish.description}
                   </p>
                 </motion.div>
 
-                {/* 2. Allergens Line (Strict, stylish Digital Signage badge) */}
+                {/* 2. Allergens Line (Strict, stylish Digital Signage badge with safe whole-unit wrapping) */}
                 <motion.div
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.22, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="flex items-center"
+                  className="w-full flex items-center"
                 >
-                  <div className="inline-flex items-center gap-[0.85vw] bg-white/[0.06] border border-white/[0.14] backdrop-blur-md px-[1.6vw] py-[0.9vh] rounded-xl text-[clamp(1.05rem,1.6vw,2.1rem)] text-[#D6E4DB] font-semibold tracking-wide shadow-[0_4px_16px_rgba(0,0,0,0.25)]">
-                    <Info className="w-[2.8vh] h-[2.8vh] min-w-[20px] min-h-[20px] text-[#F4C414] flex-shrink-0" />
-                    <span className="truncate">
-                      {dish.allergens || 'Keine deklarationspflichtigen Allergene'}
-                    </span>
+                  <div className="w-fit max-w-full flex items-start gap-[0.75vw] bg-white/[0.06] border border-white/[0.14] backdrop-blur-md px-[1.4vw] py-[0.8vh] rounded-xl text-[clamp(0.95rem,1.38vw,1.8rem)] font-semibold tracking-wide shadow-[0_4px_16px_rgba(0,0,0,0.25)]">
+                    <Info className="w-[2.5vh] h-[2.5vh] min-w-[18px] min-h-[18px] text-[#F4C414] flex-shrink-0 mt-[0.2vh]" />
+                    {renderAllergens(dish.allergens)}
                   </div>
                 </motion.div>
               </div>
